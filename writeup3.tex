@@ -1,0 +1,1213 @@
+\documentclass{report}
+% [10pt,letterpaper,final]{article} %report: chapters too%twosided
+\usepackage{amsmath,amsfonts,amssymb,amsthm,graphicx,setspace, fullpage, manfnt, multirow, verbatim}
+
+% \usepackage{enumerate}
+
+\usepackage{natbib}
+
+\usepackage{fancyhdr}
+
+\usepackage[toc]{appendix}%page
+
+\usepackage{todonotes}
+
+\input{preamble.tex}
+
+%\usepackage[
+%pdftex,
+%linktoc=page
+%]{hyperref}
+
+% \hypersetup{
+% pdfauthor={Peter Bonventre}
+% pdftitle={Research Writeup}
+% }
+
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{%
+  \markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{%
+  \markright{#1}{}}
+% \rhead{\nouppercase{\thesection\; \leftmark:\; \rightmark}}
+\rhead{\nouppercase{\leftmark}(\nouppercase{\rightmark})}
+% \fancyhead[ER]{\nouppercase{\rightmark}}
+\lhead{Research Writeup}
+
+% \let\oldenumerate\enumerate
+% \renewcommand{\enumerate}{
+% \oldenumerate[\arabic{enumi}]
+% \itemsep-4pt
+% }
+
+\let\oldenumerate\enumerate
+\renewenvironment{enumerate}%
+{\begin{list}{\arabic{enumi}.}%
+    {\itemsep=0in\usecounter{enumi}}%
+  }{\end{list}}
+
+\newenvironment{renumerate}
+{\begin{list}{\roman{enumi}.}
+    {\itemsep=0in\usecounter{enumi}}
+  }{\end{list}}
+
+
+\renewcommand{\labelenumi}{\theenumi}
+
+\title{Research Writeup}
+\author{Peter Bonventre}
+\date{\today}
+
+\newcommand{\Top}{\text{$\mathcal{T}\!op$}}
+\newcommand{\Set}{\text{$\mathcal{S}\!et$}}
+\DeclareMathOperator{\Iso}{Iso}
+\DeclareMathOperator{\Cat}{Cat}
+\newcommand{\iso}[1]{\text{$\Iso\pr{#1}$}}
+
+
+\newcommand{\TopG}{\text{\underline{$\Top$}$_G$}}
+\newcommand{\SetG}{\text{\underline{$\Set$}$_G^{\mbox{\scriptsize Iso}}$}}
+\newcommand{\SetGI}{\text{$\Set^G_{\mbox{\scriptsize Iso}}$}}
+\renewcommand{\ST}{\text{$[\SetG,\TopG]^G$}}
+\renewcommand{\C}{\text{$\mathcal{C}$}}
+\newcommand{\D}{\text{$\mathcal{D}$}}
+%\renewcommand{\smash}{\text{$\land$}}
+\newcommand{\p}{\text{\ul{$p$}}}
+\newcommand{\q}{\text{\ul{$q$}}}
+\newcommand{\n}{\text{\ul{$n$}}}
+%\newcommand{\ismash}{\operatornamewithlimits{\smash}}
+\newcommand{\icap}{\operatornamewithlimits{\sqcap}}
+\newcommand{\ico}{\operatornamewithlimits{\sqcup}}
+\renewcommand{\hat}[1]{\text{$\widehat{#1}$}}
+\renewcommand{\O}{\text{$\mathcal{O}$}}
+\newcommand{\V}{\text{$\mathcal{V}$}}
+
+\begin{document}
+\maketitle
+
+\onehalfspacing
+
+\tableofcontents
+
+
+%\renewcommand{\smash}{\text{\,$\land$\,}}%hyperref is being stupid, need this and the above \renew\smash in order for the table of contents to format at all/properly
+
+\chapter{Introduction}
+\section{Classical Operads}
+A la Kelly
+\section{$G$-operads}
+
+\section{$N_\infty$ Operads}
+A la Hill-Blumberg \citep{blumberg_operadic_2013}
+
+\chapter{Expanded Presentation of $G$-Operads}
+
+We recall that classical $G$-operads can be described as monoids in $[\Sigma,\Top^G]$ under the composition product. Our goal is the show that $G$-operads can be indexed over all finite $G$-sets, not just the ordered trivial ones. This would allow us to present more structures of $G$-operads and their algebras.
+
+The main theorem of this chapter is as follows:
+\begin{theorem}
+  A {\em $G$-operad} $\O$ is equivalently a list of spaces $\O(T)$ for all $T\in\SetG$, natural in $T$, along with equivariant composition maps $\O(T)\times\icap_tO(F_t)\to\O(\ico_tF_t)$ for all $F: T\to \Set^G$ constant on orbits, which are natural in $T$ and $F$.
+\end{theorem}
+
+
+%We begin by showing an equivalence of categories. The main theorem of this chapter is as follows:
+%\begin{theorem}
+%  There exists a (non-symmetric) monoidal product $\circ$ on $[\SetG,\TopG]^G$, the category of $G$-functors from the $G$-category of finite $G$-sets with all isomorphisms and the $G$-category of $G$-spaces with all continuous maps, such that there is an equivalence of symmetric monoidal categories $([\Sigma, \Top^G],\circ)\cong ([\SetG,\TopG]^G,\circ)$.
+%\end{theorem}
+
+\section{Equivalence of (unstructured) Categories}
+We begin by showning an equivalence of categories. 
+We first observe that our original category  $[\Sigma, \Top^G]$ is isomorphic to the category $[\Sigma,\TopG]^G$. This sets us up to do some calculations. Consider the map $i: \Sigma\to \SetG$ which includes the standard finite sets as trivial $G$-sets; this map is clearly a fully-faithful $G$-functor, and induces a map $i^*: \ST \to [\Sigma,\TopG]^G$. This map has a left adjoint which is well-behaved:
+\begin{lemma}
+  The $G$-functor $i^*$ has a left adjoint $i_!: [\Sigma,\TopG]^G\to\ST$ which is an equivalence of $G$-categories.
+\end{lemma}
+\begin{proof}
+  The universal property of enriched left Kan extensions and Corollary \ref{fullyfaithful} imply that $i_!X$ is a fully-faithful $G$-functor, if it exists. By definition, we have $i_!X(T) = \int^{n\in\Sigma}X(n)\times\iso{n,T}$. Since $X$ is a $G$-functor, it induces a map $\Sigma_n\to\TopG(X(n),X(n))$, and hence the induced $\Sigma_n$-action on $X(n)$ is $G$-equivariant. Thus this colimit exists for all $T\in\SetG$, given by $i_!X(T) \cong X(|T|)\times_{\Sigma_{|T|}}\iso{|T|,T}$.\\   
+  To conclude $i_1$ is an equivalence, we must show it is essentially surjective. We claim that $i_!(i^*X)\cong X$ for all $X$, given by the map $X(n)\times_{\Sigma_n}\iso{n,T}\to X(T)$ defined as $[x, \phi]\mapsto X(\phi)(x)$.
+  \begin{description}\itemsep-4pt
+  \item[well-defined] $\Sigma_n$ acts on $X(n)$ on the left, and $\Iso(n,T)$ on the right, so the equivalence relation is given by $[X(\sigma)(x), \phi] = [x,\phi\sigma]$, so we check $[X(\sigma^{-1})(x), \phi\sigma]\mapsto X(\phi\sigma\sigma^{-1})(x) = X(\phi)(x)$.
+  \item[homeomorphism] There is a unique inverse: we write $x\mapsto [X(\sigma^{-1})(x), \sigma]$ for any $\sigma\in\Iso(n,T)$; we note that any choice of $\sigma$ yields the same map, and clearly these maps are mutual inverses.
+  \item[equivariant] We compute
+    \[g.[x, \phi]=[g.x,  g\phi] \mapsto X(g_T)X(\phi)g_{X(n)}(x) = g_{X(T)}X(\phi)g_{X(n)}^{-1}g_{X(n)}(x) = g.(X(\phi)(x)),\]
+    using that $X$ is a $G$-functor and hence $X(g.\phi) = g.(X(\phi))$.   
+  \end{description}
+  Thus our map is an equivariant homeomorphism, and thus an isomorphism in $\Top^G$.
+\end{proof}
+
+\begin{cor}
+  $[\Sigma,\Top^G]\cong[\Sigma,\TopG]^G\cong\ST$ as categories. \qed
+\end{cor}
+
+
+% NEW SECTION
+\section{Monoidal Structures under the new index}
+Since $[\Sigma,\Top^G]$ and $\ST$ are congruent, we can port up the monoidal structures from the original setting to our larger indices. That is, we inherit a tensor product given by
+\begin{align*}
+  (X\otimes Y)(T) &:= (i^*X\otimes i^*Y)(n)\times_{\Sigma_n}\iso{n,T}\\
+  &\cong \coprod_{p,q}X(p)\times Y(q)\times_{\Sigma_p\times \Sigma_q}\iso{p+q,T}
+\end{align*}
+where $n = |T|$, with unit $I = \Sigma(0,\blank)$, 
+and a composition product given by
+\begin{align*}
+  (X\circ Y)(T) &:= (i^*X\circ i^*Y)(n)\times_{\Sigma_n}\iso{n,T}\\
+  &\cong \coprod_r\left[\coprod_{m_1,\ldots,m_r}X(r)\times Y(m_1)\times\ldots\times Y(m_r)\times_{\Sigma_{m_1}\times\ldots\times\Sigma_{m_r}}\iso{m_1+\ldots+m_r,T}\right]_{\Sigma_r}
+\end{align*}
+with unit $J = \Sigma(1,\blank)$.
+
+However, these presentations don't allow us to utilize any of the new indices we've added. In order to do so, we hark back to the original coend definitions of these products, and consider the ``naive'' extension of them to our new category. 
+
+
+\subsection{Indexed Coproducts and Products}
+Before we can do that, we have to first deal with ``indexed (co)products''. In particular, if we have a $G$-set $F_t$ for each element $t$ of a $G$-set $T$, we need to record that information in the coproduct, and possibly allow $G$ to permute the indicies. That is, given a functor $F: G/H\to \Set^G$ (considering $G/H$ as a discrete category), we define $\ico_{t\in G/H}F_t$ to be the $G$-set $\sets{(t,x)}{t\in G/H, x\in F_t}$ with $G$-action given by 
+\[g.(t,x) = \left\{\begin{array}{lr}(t,gx) & Fg\neq F\\ (gt,gx) & Fg = F\end{array}\right. .\]
+This definition extends naturally to all finite $G$-sets $T$ by decomposing $T$ into a coproduct of orbits, say $T = G/H_1\cprod\ldots\cprod G/H_k$, and defining $\coprod_tF_t$ for a given map $F: T\to \Set^G$ by $\coprod_{G/H}F|_{G/H_1}\cprod \ldots \coprod_{G/H_k}F|_{G/H_k}$. 
+
+Explicitly, let $g_F: T\to T$ be defined to be the identity on those orbits where $F$ is not constant, and multiplication by $g$ on those orbits where $F$ is constant:
+\begin{align}
+\label{g_F}
+g_F(t) = \left\{\begin{array}{lr}t & F|_{Gt} \neq Fg|_{Gt}\\ gt & F|_{Gt} = Fg|_{Gt}\end{array}\right. .
+\end{align}
+Then $g.(t,x) = (g_F(t), gx)$.
+
+Some Examples:
+\begin{enumerate}
+\item If $F$ is the constant function to the one-point set $*$, then $\ico_t F_t = \ico_t*$ is canonically isomorphic to $T$.
+\item More generally, if $F$ is constant on orbits of $T$, then the action of $G$ on $\ico_tF_t$ always looks like $g.(t,x) = (gt,gx)$.
+\item If $T = n$ is an ordered finite set, the action of $G$ is always $g.(t,x) = (t,gx)$, and we write $\ico_nF_i = F_1\ico \ldots, \ico F_n$.
+\end{enumerate}
+In all instances which follow, we will mean this ``coproduct with $G$-index'' whenever we write the coproduct.
+
+Similarly, we define the {\em indexed product} of a functor $F: G/H\to \Set^G$ to be indexed lists of elements: 
+\[\prod_{t\in G/H}F_t := \sets{f\in\Top(G/H, \coprod F_t)}{f(t)\in F_t \mbox{ for all $t\in G/H$}} = \sets{\icap_tx_t}{x_t\in F_t}\]
+with $G$-action given by $g.(\icap_tx_t) =$
+\[g.(x_t)_t = \left\{\begin{array}{lr}\icap_tgx_t & Fg\neq F\\ \icap_tgx_{g^{-1}t} & Fg = F\end{array}\right. ,\]
+with a similar extension to all finite $G$-sets $T$.
+
+There are a number of natural maps that act on indexed coproducts.
+\begin{renumerate}
+\item Given $g\in G$, $T\in\Set^G$, and $F: T\to\Set^G$,define $\tilde g: \ico_tF_{g^{-1}t}\to \ico_tF_t$ by $(t,x)\mapsto (gt,gx)$.
+\item Given $H: S\to T$, we have a map $\hat H: \ico_sF_{H(s)}\to \ico_tF_t$ given by $(s,x)\mapsto (H(s),x)$.
+\end{renumerate}
+These maps are nicely compatible:
+\begin{lemma}\label{tildehat}
+  Given $g$ and $H$ as above, then $\tilde g^{-1} \circ \hat{g.H} = \hat H \circ \tilde g^{-1}$.
+\end{lemma}
+\begin{proof}
+  We compare:
+  \begin{diagram}
+    \ico_sF_{H(g^{-1}s)} & \rTo^{\tilde g^{-1}} & \ico_sF_{H(s)} & \rTo^{\hat H} & \ico_tF_t\\
+    (s,x) & \rMapsto & (g^{-1}s, g^{-1}x) & \rMapsto & (H(g^{-1}s), g^{-1}x)\\
+    $ $\\
+    \ico_sF_{H(g^{-1}s)} & \rTo^{\hat{g.H}} & \ico_tF_{g^{-1}t} & \rTo^{\tilde g^{-1}} & \ico_tF_t\\
+    (s,x) & \rMapsto & ((g.H)(s),x) & \rMapsto & (g^{-1}(g.H)(s),x) = (H(g^{-1}s), g^{-1}x).
+  \end{diagram}
+\end{proof}
+
+Moreover, these indexed products and coproducts act like they should on hom-objects:
+\begin{prop}
+  For all $F: T\to \Top^G$, we have $\icap_t\TopG(X_t, Y) \cong \TopG(\ico_tX_t,Y)$ and $\icap_t\TopG(X,Y_t)\cong \TopG(X,\icap_tY_t)$.
+\end{prop}
+\todo[inline]{prove this}
+
+
+\subsection{New Tensor Product}
+Now, we define a ``new'' tensor product: given $X,Y\in \ST$, define
+\[X\boxtimes Y:= \int^{S_1,S_2}X(S_1)\times Y(S_2)\times \Iso(S_1\ico S_2,\blank).\]
+\begin{lemma}
+  $X\boxtimes Y \cong X\otimes Y$ for all $X$ and $Y$.
+\end{lemma}
+\begin{proof}
+  By an above isomorphism, we have
+  \begin{align*}
+    X\boxtimes Y \cong\int^{S_1,S_2\in\SetG, p,q\in\Sigma}X(p)\times \iso{p,S_1}\times Y(q)\times\iso{q,S_2} \times \iso{S_1\ico S_2,\blank}. 
+  \end{align*}
+  It will suffice to show 
+  \[\int^{S_1}\iso{p,S_1}\times\iso{S_1\ico S_2,W}\cong \iso{p\ico S_2,W}\]
+  and 
+  \[\int^{S_2}\iso{q,S_2}\times\iso{p\ico S_2,W}\cong \iso{p\ico q,W},\]
+  both natural in $W$. We only prove the first statement; the latter is analogous. Yoneda reduction implies that they are isomorphic in $\TopG$; that is, we can conclude that the spaces are homeomorphic. In order to show the Yoneda isomorphism is $G$-equivariant, we need to present both of these spaces to consider their $G$-action. There is a small matter of the well-definedness of these colimits; to solve this problem, we will present these colimits as if they were being taken in $\Top^G$, and then we will show that the natural $G$-action passed on to them is indeed well-defined (even though we may be taking colimits over non-equivariant maps); see Appendix \ref{equiv_enriched} for more details. We write
+  \[\int^{S_1}\iso{p,S_1}\times\iso{S_1\ico S_2,W} \cong \coprod_{S_1\in\SetG}\Iso(p,S_1)\times \Iso(S_1\ico S_2,W)/\sim\]
+  where the equivalence relation identifies $[\sigma\phi,\psi] = [\phi,\psi(\sigma\cprod 1)]$, and the $G$-action is given by $g.[\phi,\psi] = [g\phi, g\circ\psi \circ (g^{-1}\cprod g^{-1})]$. This $G$-action is in fact well-defined:
+  \begin{align*}
+    g.[\sigma\phi,\psi(\sigma^{-1}\cprod 1)] &= [g\sigma\phi,g\circ \psi\circ (\sigma^{-1}\cprod 1)\circ (g^{-1}\cprod g^{-1})] =[(g\sigma)\phi,g\circ\psi\circ(1\cprod g^{-1})\circ((g\sigma)^{-1}\cprod 1)]\\
+    &= [\phi,g\circ\psi \circ (1\cprod g^{-1})] =[g\phi,g\circ \psi \circ (g^{-1}\cprod g^{-1})] = g.[\phi,\psi].
+  \end{align*}
+
+  Now, the homeomorphism given by Yoneda is the map $[\phi,\psi]\mapsto \psi\circ(\phi\cprod 1)$.
+  \begin{description}\itemsep-4pt
+  \item[well-defined] We observe $[\sigma\phi,\psi(\sigma^{-1}\cprod 1)]\mapsto \psi \circ (\sigma^{-1}\cprod 1)\circ (\sigma\phi\cprod 1) = \psi\circ(\phi\cprod 1)$, as desired.
+  \item[equivariant] We compute
+    \begin{align*}g.[\phi,\psi] = [g\circ \phi,g\circ\psi\circ (g^{-1}\cprod g^{-1})]&\mapsto g\circ\psi\circ(g^{-1}\cprod g^{-1})\circ(g\circ \phi \cprod 1) = g\circ \psi\circ(\phi\cprod g^{-1})\\
+      &=g\circ \psi\circ (\phi\cprod 1)\circ(1\cprod g^{-1})=g\circ\psi\circ(\phi\cprod 1)\circ(g^{-1}\cprod g^{-1})\\
+      &= g.(\phi\circ(\phi\cprod 1)),
+    \end{align*}
+    were the second-to-last equality is since $p$ is a trivial $G$-set. 
+  \end{description}
+  Thus $X\boxtimes Y(W) \cong \int^{p,q}X(p)\times Y(q)\times\iso{p\ico q,W}$, and there exists a cannonical isomorphism $p\ico q\to p+q$; hence $X\boxtimes Y\cong X\otimes Y$.
+\end{proof}
+\begin{prop}
+  $(\ST,\otimes) \cong (\ST,\boxtimes)$ as symmetric monoidal categories.
+\end{prop}
+\begin{proof}
+  It is straightforward to show that the above isomorphism between $X\boxtimes Y$ and $X\otimes Y$ respects the unital, associative, and symmetric structures (where for the symmetric structures we really need that $p\ico q$ is isomorphic but not equal to $q\ico p$).
+\end{proof}
+
+\subsection{Indexed Tensor Product}
+The more interesting representation comes via the composition product. In previous work which present operads being indexed over finite sets, the terms in the composition product were still only being indexed by standard (ordered) finite sets (for example, \cite{ching_note_2012}). However, we would like to allow our group $G$ to act on these components, so we will be indexing them by elements of a $G$-set. To that end, we consider the indexed monoidal product of a $G$-symmetric sequence induced by a $G$-set $T$, as we now describe.
+\todo[inline]{covering categories buisness; either here or earlier}
+
+Given a $G$-set $T$, we define $B_TG$ to be the category with objects $T$, and maps $t\to t'$ are elements $g\in G$ such that $gt = t'$. If $T$ is a point, we denote $B_TG$ by $BG$. Moreover, equivariant maps $S\to T$ induce obvious functors $B_SG\to B_TG$, and these functor are in fact covering categories (see Appendix \ref{covering_cats} for more details). In particular, let $p_T: T\to *$ and $p_T: B_TG\to BG$ be the collapse maps.
+
+We define the ``tensor product indexed by the $G$-set $T$'', a functor $N^T: [\Sigma,\Top]^{BG}\to[\Sigma,\Top]^{BG}$, as the composition
+\[ N^T: [\Sigma,\Top]^{BG}\overset{p_T^*}{\longto} [\Sigma,\Top]^{B_TG} \overset{(p_T)_*^\otimes}{\longto}[\Sigma,\Top]^{BG},\]
+where $(p_T)_*^\otimes$ is the indexed monoidal product. That is, we have that $N^TY(n)$ is homeomorphic to $Y^{\otimes|T|}(n)$ with a special $G$-action:
+\[N^TY(n)\cong \coprod_{F:T\to\Sigma}\prod_tY(F_t)\times\iso{\ico_tF_t,n}/\sim\]
+with 
+\[[\icap_tY(f_t)(y_t)\times \phi]=[\icap_ty_t, (\phi\circ \cprod f_t)]\]
+and $G$-action 
+\[g.[\icap_ty_t\times\phi] := [\icap_tgy_{g^{-1}t}\times(g\phi\tilde g^{-1})] = [\icap_tgy_{g^{-1}t}, (\phi\tilde g^{-1})],\]
+where $\tilde g: \ico_tF_t\to \ico_tF_tg^{-1}$ is the map $(t,x)\mapsto (gt,gx) = (gt,x)$. We will show this $G$-action is well-defined after we extend the domain for $N^T$. 
+
+Now, we have shown that $\ST\cong[\Sigma,\Top^G]$, which by general nonsense is isomorphic to $[\Sigma,\Top]^{BG}$. Thus we may extend our definition of $N^T$ to $\ST$, which yields
+\[N^TY(J)\cong \coprod_{F:T\to\Sigma}\icap_tY(F_t)\times\iso{\ico_tF_t,J}/\sim\]
+with $F_t\in\Sigma$, and
+\[[\icap_tY(f_t)(y_t),  \phi]=[\icap_ty_t, (\phi\circ \cprod f_t)]\]
+and $G$-action 
+\[g.[\icap_ty_t, \phi] = [\icap_tgy_{g^{-1}t}, (g\phi\tilde g^{-1})].\]
+As before, this does not make good use of our extended indexing category, so we consider the (potentially different) functor $\N^T: \ST\to\ST$, where we define $\N^TY(J)$ to be $Y^{\boxtimes|T|}(J)$ with a special $G$-action:
+\[\N^TY(J)\cong \coprod_{F:T\to \SetG}\prod_tY(F_t)\times\iso{\ico_tF_t,J}/\sim\]
+with the same equivalence relation and $G$-action.
+
+\begin{lemma}
+  This $G$-action is well-defined.
+\end{lemma}
+\begin{proof}
+  For the action on $\N^TY(J)$, suppose we are given $F,F':T\to\SetG$, $y_t\in Y(F_t)$, $f_t: F_t\to F'_t$, $\phi: \ico_tF_t\to W$, and $g\in G$. We compute:
+  \begin{align*}
+    g.[\icap_tY(f_t)(y_t), (\phi\circ\cprod f_t^{-1})] &= [\icap_tgY(f_{g^{-1}t})(y_{g^{-1}t}),  g\circ\phi\circ \cprod f_t^{-1}\circ \tilde g^{-1}]\\
+    &=[\icap_tY(g.f_{g^{-1}t})(gy_{g^{-1}t}),  g\circ\phi\circ\cprod f_t^{-1}\circ \tilde g^{-1}] = [\icap_tgy_{g^{-1}t},  g\circ \phi\circ \cprod f_t^{-1}\circ \tilde g^{-1} \circ \cprod g.f_{g^{-1}t}]
+  \end{align*}
+  We observe that the presentation of that last map can be simplified:
+  \begin{diagram}
+    \ico_tF_t' & \rTo^{\cprod gf_{g^{-1}t}g^{-1}} & \ico_tF_t'g^{-1} & \rTo^{\tilde g^{-1}} & \ico_tF_t' & \rTo^{\cprod f_t^{-1}} & \ico_tF_t &\rTo^{g\circ\phi} & W\\
+    (t,x) & \rMapsto & (t,gf_{g^{-1}t}(g^{-1}x)) & \rMapsto & (g^{-1}t, f_{g^{-1}t}(g^{-1}x)) & \rMapsto & (g^{-1}t,g^{-1}x) & \rMapsto & g\phi(g^{-1}t,g^{-1}x)
+  \end{diagram}
+  and hence this last map is actually just $g\phi\tilde g^{-1}$, as desired.
+
+  For $N^TY(J)$, the only difference is that some of these $g$ maps are trivial.
+\end{proof}
+\begin{prop}
+  $N^TY \cong \N^TY$ for all $Y\in\ST$.
+\end{prop}
+\begin{proof}
+  One map is just the wedge inclusion, and any choice of bijections $f_t:F_t\to|F_t|$ allows us to write down an inverse map.
+  \todo{do i need to expand this? I will be doing a more explicit calculation for the composition product}
+\end{proof}
+
+A calculation, generalizing Lemma 3.1 in \cite{kelly_operads_2005}, is as follows:
+\begin{lemma}
+  \label{normcomp}
+Given $X,Y\in[\Sigma,\Top^G]$, $N^T(X\circ Y)\cong N^TX\circ Y$.
+\end{lemma}
+\todo[inline]{PROVE THIS}
+
+
+\subsection{New Composition Product}
+We would like to define a ``new'' composition product on $\ST$ by $X\boxdot Y:=\int^TX(T)\times N^TY$. In order for that definition to make sense, we first must show the (contravariant) naturality of $N^TY$ in $T$. Given $T,S\in \Set^G$, we have presentations
+\begin{align*}
+  N^TY &\cong \coprod_{F: T\to \Set^G}\icap_tY(F_t) \times \Iso(\ico_tF_t, \blank)/\sim;\\
+  N^SY &\cong \coprod_{U: S\to \Set^G}\icap_sY(U_s) \times \Iso(\ico_sU_s, \blank)/\sim
+\end{align*}
+with the equivalence relation identifying $[\icap_tY(f_t)(y_t),\phi]=[\icap_ty_t,\phi\circ \cprod f_t]$ and similarly for $S$. Now, given a map $H: T\to S$ in $\SetG$, we construct a map $N^HY: N^SY\to N^TY$ given on components by
+\begin{diagram}
+  \icap_sY(U_s) \times \Iso(\ico_sU_s,W) & \rTo & \icap_tY(U_{H(t)})\times \Iso(\ico_tU_{H(t)},W)\\
+  [\icap_sy_s,\phi] & \rMapsto & [\icap_ty_{H(t)},\phi\circ \hat H]
+\end{diagram}
+where $\hat H: \ico_tU_{H(t)}\to \ico_sU_s$ by $(t,x)\mapsto (H(t),x)$. 
+\begin{claim}
+  This map is well-defined.
+\end{claim}
+\begin{proof}
+  Given $f_s: U_s\to U'_s$ for each $s$, let $z_s = Y(f_s)(y_s)$ and $\psi = \phi\circ \ico f_s^{-1}$. Thus we must show $[\icap_sy_s,\phi]$ and $[\icap_sz_s,\psi]$ map to the same target. We compute:
+  \begin{align*}
+    [\icap_sz_s,\psi] &\mapsto [\icap_tz_{H(t)},\psi\circ \hat H] = [\icap_tY(f_{H(t)})(y_{H(t)}),\phi\circ \ico f_s^{-1} \circ \hat H]\\
+    &= [\icap_ty_{H(t)},\phi\circ \ico f_s^{-1} \circ \hat H \circ \ico f_{H(t)}]
+  \end{align*}
+  and we observe that 
+  \begin{diagram}
+    \ico_t U_{H(t)} & \rTo^{\ico f_{H(t)}} & \ico_t U'_{H(t)} & \rTo^{\hat H} & \ico_s U'_s &\rTo^{\ico f_s^{-1}} & \ico_s U_s\\
+    (t,x) & \rMapsto & (t,f_{H(t)}(x)) & \rMapsto & (H(t), f_{H(t)}(x)) & \rMapsto & (H(t), f^{-1}_{H(t)}f_{H(t)}(x)) = (H(t), x)
+  \end{diagram}
+  and thus $\phi \circ \ico f_s^{-1} \circ \hat H \circ \ico f_{H(t)}$, and hence the above equality ends with precisely $[\icap y_{H(t)},\phi\circ\hat H]$, as desired.
+\end{proof}
+
+We can now define a ``new'' composition product $\boxdot$: given $X,Y\in\ST$, define
+\[X\boxdot Y := \int^TX(T)\times N^TY \cong \coprod_{T\in\Set^G}\coprod_{F:T\to\Set^G}X(T)\times \icap_tY(F_t)\times Iso(\ico_tF_t,\blank)/\sim\]
+with the equivalence relation identitfying
+\begin{enumerate}
+\item $[x,\icap_ty_{H(t)}, \phi\circ \hat H] = [X(H)(x),\icap_sy_s,\phi]$ for all $y_s\in U_s$, $\phi: \ico_sU_s\to W$, $x\in X(T)$, and $H: T\to S$. 
+\item $[x,\icap_tY(f_t)(y_t),\phi] = [x,\icap_ty_t,\phi\circ \ico_t f_t]$ fora ll $x\in X(T)$, $y\in Y(F_t)$, $f_t: F_t\to F'_t$, and $\phi: \ico_tF'_t \to W$
+\end{enumerate}
+with $G$-action defined by
+\[g.[x,\icap_ty_t, \phi] = [g.x, \icap_tgy_{g^{-1}t},g\phi\tilde g^{-1}]\]
+with $\tilde g: \ico_tF_{g^{-1}t} \to \ico_tF_t$ defined by $(t,x)\mapsto (gt,gx)$; observe that if we start in the component indexed by $F: t\mapsto F_t$, $g$ moves us to the component indexed by $Fg^{-1}: t\mapsto F_{g^{-1}}$.
+
+\begin{claim}
+  This $G$-action is well-defined.
+\end{claim}
+\begin{proof}
+  We only need to check the action is preserved under the first identification, as the second is just an easy extension of the action on $N^TY$. We compute that
+  \begin{align*}
+    g.[X(H)(x),\icap_sy_s,\phi] &= [gX(f)(x),\icap_sgy_{g^{-1}s},g\circ\phi\circ \tilde g^{-1}]\\
+    &= [X(g.H)gx, \icap_sgy_{g^{-1}s},g\circ\phi\circ \tilde g^{-1}]  &\qquad &\mbox{(since $g.X(H) = X(g.H)$)}\\
+    &= [gx, \icap_tgy_{H(g^{-1}t)}, g\circ \phi\circ \tilde g^{-1} \circ \hat{g.H}] & &\mbox{(since $gy_{g^{-1}(g.H)(t)} = gy_{H(g^{-1}t)}$)}\\
+    &= [gx,\icap_tgy_{H(g^{-1}t)},g\circ \phi\circ \widehat H \circ \tilde g^{-1}] & &\mbox{(Lemma \ref{tildehat})}\\
+    &= g.[x,\icap y_{H(t)}, \phi\circ \hat H],
+  \end{align*}
+  as desired.
+\end{proof}
+
+\begin{prop}
+  This composition product is not new: $X\boxdot Y \cong X\circ Y$ in $\Set^G$
+\end{prop}
+\begin{proof}
+  We note that since $X\boxdot Y = \int^TX(T)\times N^Y \cong \int^{T\in\Set^G, p\in \Sigma}X(p)\times \Iso(p,T) \times N^TY$, it suffices to show $\int^T\Iso(p,T)\times N^TY \cong Y^{\boxtimes p}$. Thus we will show
+  % \renewcommand{\theenumi}{(\roman{enumi})}%
+  \begin{renumerate}%{\roman{enumi}}
+  \item $\int^T\Iso(p,T)\times N^TY \cong N^pY$
+  \item $N^pY \cong Y^{\boxtimes p}$
+  \end{renumerate}
+  % \renewcommand{\theenumi}{\arabic{enumi}}%
+
+  For [i], Yoneda reduction again implies we have a homeomorphism, so again we are reduced to checking equivariance. We have presentations:
+  \[\int^T\Iso(p,T)\times N^Y(W) \cong \coprod_{T\in\Set^G}\Iso(p,T)\times\coprod_{F:T\to \Set^G}\icap_tY(F_t)\times \Iso(\ico_tF_t,W)/\sim\]
+  with $[\sigma,\icap_ty_{H(t)},\phi\circ \hat H] = [H\sigma,\icap_sy_s,\phi]$ and $[\sigma,\icap_tY(f_t)(y_t),\phi] = [\sigma,\icap_ty_t,\phi\circ \ico f_t]$ and $G$-action $g.[\sigma,\icap_ty_t,\phi] = [g\sigma,\icap_tgy_{g^{-1}t},g\circ\phi\circ\tilde g^{-1}]$.
+
+  On the right hand side, we have
+  \[N^pY \cong \coprod_{U: p\to \Set^G}Y(U_1)\times\ldots \times Y(U_p)\times \Iso(\ico_pU_i,W)/\sim\]
+  with $[Y(f_1)(y_1),\ldots, Y(f_p)(y_p),\phi] = [y_1,\ldots, y_p,\phi\circ \ico_if_i]$ and $G$-action $g.[y_1,\ldots, y_p,\phi] = [gy_1,\ldots, gy_p,g\circ\phi\circ \ico g^{-1}]$. 
+
+  The Yoneda isomorphsim is given by $[\sigma,\icap_ty_t,\phi]\mapsto N^\sigma(\icap_ty_t,\phi) = [\icap_iy_{\sigma i},\phi\circ \hat \sigma]$ with $\hat sigma: \ico_iF_{\sigma i}\to \ico_tF_t$ given by $(i,x)\mapsto (\sigma i, x)$. This map is well-defined on our presentation: $N^\sigma$ is well-defined, and we observe that $[\sigma,\icap_ty_{H(t)},\phi\circ \hat H]$ maps to $[\icap_iy_{H(\sigma i)},\phi \circ \hat H \circ \hat \sigma] = N^{H\sigma}(\icap_iy_i,\phi)$. Moreover, this map is equivariant:
+  \begin{align*}
+    g.[\sigma,\icap_ty_t,\phi] &= [g\sigma,\icap_tgy_{g^{-1}t},g\circ\phi\circ\tilde g^{-1}] \mapsto [\icap_igy_{g^{-1}g\sigma i},g\circ\phi\circ \tilde g^{-1}\circ \hat{g\sigma}]\\
+    &= [\icap_igy_{\sigma i},g\circ\phi\circ\tilde g^{-1}\circ\hat{g\sigma}]\\
+    &= [\icap_igy_{\sigma i},g\circ\phi\circ\hat\sigma\circ\tilde g^{-1}].
+  \end{align*}
+  Hence, we have proved part [i]. The proof of [ii] is another simple computation:
+  \begin{align*}
+    N^pY(W) &= \coprod_{F: p\to \Set^G}\icap_iY(S_i) \times \Iso(\ico_pF_i,W)/\sim\\
+    &\cong \int^{F_i\in \SetG}\icap_iY(S_i)\times \Iso(\ico_pF_i,W).
+  \end{align*}
+  This last statement makes sense since the $G$-action on $\ico_pF_i$ alone matches the ``special'' $G$-action we put on the large coproduct (precisely since the indexing map $i\mapsto F_i$ is trivially constant on $G$-orbits). But this last presentation is exactly the definition of $Y^{\boxtimes p}$. 
+
+  Thus, [i] and [ii] have been shown, and thus our proposition holds.
+\end{proof}
+
+\begin{theorem}
+  $([\Sigma,\Top^G],\circ)$ and $(\ST,\boxdot)$ are equivalent as symmetric monoidal categories. \qed
+\end{theorem}
+
+\begin{remark}
+  From now on, the symbol $\circ$ will be used to mean either composition product. 
+\end{remark}
+
+
+\subsection{Another Representation}
+\todo[inline]{this may not work, as it restricts our composition too much: it would require that we could only compose guys who were super-constant on orbits (constant on orbits across the different inputs), which seems to be a very strong condition}
+
+We can make our lives even easier. The definition of the $G$-action on indexed coproducts was muddled by the fact that $F$ need not be constant on orbits, which would mean the $G$-action couldn't permute all the indices. However, we are lucky in that the restriction to only those $F$ which are constant on orbits does not change our $G$-homeomorphism type:
+\begin{prop}
+  $X\circ Y$ is $G$-homeomorphic to the $G$-space $X\odot Y$ given topologically by 
+\[\coprod_{T\in\Set^G}\coprod_{F \mbox{ constant on orbits}}X(T)\times\icap_tY(F_t)\times\Iso(\ico_tF_t,J)/\sim\]
+where the $G$-action is as in $X\circ Y$, and the equivalence relation identifies STYLE (1) as before, but for (2) only allows the $f_t$ to be such that $\ico_tcodom(f_t)$ is also constant on orbits. 
+\end{prop}
+\begin{proof}
+  The techniques in the proof are similar to those used above. To write down the map requires a choice of bijection $T\to|T|$ for all $T$ in our universe so we may write
+\[X\circ Y(J) \cong \coprod_{T\in\Set^G}\coprod_{F:T\to\Set^G}X(r)\times_{\Sigma_n}\Iso(n,T)\times\icap_tY(m_t)\times_{\Sigma_{m_t}}\Iso(m_t,F_t)\times_{\icap_t\Sigma_{m_t}}\Iso(\ico_tF_t,J)/\sim,\]
+and similarly for $X\odot Y$, and we define our map $X\circ Y \to X\odot Y$ by
+\[[(x,\alpha),\icap_t(y_t,\beta_t),\phi]\mapsto [(a,id),\icap_i(b_{\alpha i}, id),\phi\circ \hat\alpha\circ\ico_i\beta_{\alpha i}\circ \rho],\]
+and the inverse is the inclusion. The verification that these maps are well-defined $G$-maps which are two-sided inverses is straightforward.
+\end{proof}
+
+Some remarks:
+\begin{itemize}\itemsep-4pt
+\item The same map also gives an {\em explicit} $G$-homeomorphism between the two presentations of $X\circ Y$.
+\item This allows us to ignore a lot of the problems that arise when we work with insufficiently equivariant objects.
+\end{itemize}
+
+
+
+
+%New Section
+\section{Monoids in $(\ST, \boxdot)$}
+Now that we have a presentation of the composition product which explictly uses the indexing category of finite $G$-sets, what new information do we get about monoids, i.e. $G$-operads?
+
+\subsection{Maps out of a composition}
+To recap: we've shown that, given symmetric sequences $X,Y\in[\Sigma, \Top^G]$, we have an evaluation of the composition product $X\circ Y$ on all finite $G$-sets $J$ given by
+\[X\circ Y(J) = X\boxdot Y(J) \cong \coprod_{T\in\Set^G}\coprod_{F:T\to\Set^G}X(T)\times \icap Y(F_t)\times \Iso(\ico_tF_t,J)/\sim\]
+where
+\begin{itemize}\itemsep-4pt
+\item We only consider the (discrete) functors $F: T\to\Set^G$ %which are constant on orbits (so $F = Fg$ for all $g\in G$).
+\item $[\sigma x,\icap_ty_t,\phi] = [x,\icap_sy_{\sigma s},\phi\circ \hat \sigma]$
+\item $[x,\icap_tX(f_t)(y_t),\phi] = [x,\icap_ty_t,\phi\circ \ico_tf_t]$
+\item $g.[x,\icap_ty_t,\phi] = [gx,\icap_tgy_{g^{-1}t},g\circ\phi\circ\tilde g^{-1}]$
+\end{itemize}
+for $\sigma: S\to T$, $f_t: F_t\to F'_t$, and $g\in G$. 
+
+\begin{prop}
+  Maps $X\circ Y \to Z$ in $Cat_G(\SetG,\TopG)^G$ correspond to maps $\gamma_F: X(T)\times\icap_tY(F_t) \to Z(\ico_tF_t)$ for all $T\in\Set^G$ and $F: T\to \Set^G$, such that, for all $\sigma: S\to T$, $x\in X(T), x'\in X(S)$, and $y_t\in Y(F_t)$:
+  \begin{renumerate}
+  \item $\gamma_F(X(\sigma)x', \icap_ty_t) = Z(\hat\sigma)\gamma_{F\sigma}(x',\icap_sy_{\sigma s})$
+  \item $\gamma_{\ico_t codom(f_t)}(x,\icap_tY(f_t)(y_t))=Z(\ico_tf_t)\gamma_F(x,\icap_ty_t)$ 
+  \item $g.\gamma_F(x,\icap_ty_t) = \gamma_F(A(g^{-1, \vee}_F)(g.x),\icap_tgy_{g_F(t)})$
+  \end{renumerate}
+  where:
+  \begin{itemize}\itemsep-4pt
+  \item $\ico_t codom(f_t): T\to \Set^G$ sends $t$ to the codomain of $f_t$
+  \item $g_F$ is defined as in Definition \ref{g_F}, and $g_F^\vee$ is defined dually: $g_F^\vee(t)=gt$ if $F$ is not constant on the orbit of $t$, and $g_F^\vee(t) = t$ if $F$ is constant on the orbit of $t$.
+  \end{itemize}
+
+In particular, if $F$ is constant on all orbits, then the map $\gamma_F$ is $G$-equivariant ($g_F^\vee$ is the identity, and $g_F$ is multiplication by $g^{-1}$).
+\end{prop}
+
+\begin{proof}
+  This is a straight-forward calculation. A map $\Gamma: X\circ Y \to Z$ is defined via equivariant maps $\tilde \gamma_J: (X\circ Y)(J)\to Z(J)$ natural in $J\in\SetG$. Breaking this down, such a map corresponds exactly to maps $\bar\gamma_F: X(T)\times\icap_tY(F_t)\times \Iso(\ico_tF_t,J) \to Z(J)$ for all $F: T\to\Set^G$, which are natural in $J$ and satisfy the relations
+  \begin{itemize}\itemsep-4pt
+  \item $\bar\gamma_F(X(\sigma)x,\icap_ty_t,\phi) = \bar\gamma_{F\sigma}(x,\ico_sy_{\sigma s},\phi\circ \hat \sigma)$
+  \item $\bar\gamma_{codom(f_t)}(x,\icap_tY(f_t)(y_t),\phi) = \bar\phi_F(x,\icap_ty_t,\phi\circ\ico_tf_t)$
+  \item $g.\bar\gamma_F(x,\icap_ty_t,\phi) = \bar\gamma_{Fg^{-1}}(gx,\icap_tgy_{g^{-1}t},g\circ\phi\circ\tilde g^{-1})$; if $F = Fg^{-1}$ is constant on all orbits, we conclude that $\bar\gamma_F$ is equivariant.
+  \end{itemize}
+Finally, by Yoneda, these are equivalent to maps $\gamma_F: X(T)\times \icap_tY(F_t)\to Z(\ico_tF_t)$ given by $\gamma_F(x,\icap_ty_t) = \bar\gamma_F(x,\icap_ty_t,id)$. 
+
+We first describe the $G$-variance of these maps. In particular, we must consider the map $g\circ \tilde g^{-1}$. We observe:
+\begin{diagram}
+\ico_tF_{g^{-1}t} & \rTo^{\tilde g^{-1}} & \ico_tF_t & \rTo^{g} & \ico_tF_t \\
+(t,x) & \rMapsto & (g^{-1}t,g^{-1}x) & \rMapsto & (g_F(g^{-1}t),x)
+\end{diagram}
+by definition of the $G$-action on $\ico_tF_t$, and putting this together yields $g\circ\tilde g^{-1} = \hat{g^{-1,\vee}_F}$:
+\begin{itemize}\itemsep-4pt
+\item If $F|_{Gt} \neq Fg|_{Gt}$, then $g_F(g^{-1}t) = g^{-1}t$, so $g\circ\tilde g^{-1}$ sends $(t,x)$ to $(g^{-1}t,x)$;
+\item If $F|_{Gt} = Fg|_{Gt}$, then $g_F(g^{-1}t) = t$, so $g\circ\tilde g^{-1}$ sends $(t,x)$ to $(t,x)$.
+\end{itemize}
+
+
+Hence, we compute:
+\begin{align*}
+g.(\gamma_F(x,\icap_ty_t)) &= g.\bar\gamma_F(x,\icap_ty_t,id) = \bar\gamma_{Fg^{-1}}(gx,\icap_tgy_{g^{-1}t},g\circ \tilde g^{-1}) \\
+&= \bar\gamma_{Fg^{-1}}(gx,\icap_tgy_{g^{-1}t},\hat{g^{-1,\vee}_F}) = \bar\gamma_F(A(g^{-1,\vee}_F)(gx),\icap_tgy_{g_F(t)},id)\\
+&= \gamma_F(A(g^{-1,\vee}_F)(gx),\icap_tgy_{g_F(t)}).
+\end{align*}
+
+
+Next, we observe that
+\[\gamma_F(X(\sigma)x,\icap_ty_t) = \bar\gamma_F(X(\sigma)x,\icap_ty_t,id) = \bar\gamma_{F\sigma}(x,\icap_sy_{\sigma s},\hat \sigma) = C(\hat \sigma)\gamma_{F\sigma}(x,\icap_sy_{\sigma s}),\]
+where the last equality comes from the naturality of $\bar\gamma$ in $J$;
+\[\begin{tikzcd}
+  X(S)\times\icap_sY(F_{\sigma s})\times \Iso(\ico_sF_{\sigma s}, \ico_tF_t) \arrow{r}{\bar\gamma_{F\sigma}} & Z(\ico_tF_t) \\
+  X(S)\times\icap_sY(F_{\sigma s})\times \Iso(\ico_sF_{\sigma s}, \ico_sF_{\sigma s}) \arrow{u}{(\hat \sigma)_*} \arrow{r}{\bar\gamma_{F\sigma}} & Z(\ico_sF_{\sigma s}) \arrow{u}{C(\hat\sigma)}
+\end{tikzcd}\]
+
+Finally, $\gamma_{codom(f_t)}(x,\icap_tY(f_t)(y_t)) = Z(\ico_tf_t)\gamma_F(x,\icap_ty_t)$ again follows from the naturality of $\bar\gamma$; Letting $F' = \ico_tcodom(f_t)$, we find:
+\[\begin{tikzcd}
+  X(T)\times\icap_tY(F_{t})\times \Iso(\ico_tF_{t}, \ico_tF'_t) \arrow{r}{\bar\gamma_{F}} & Z(\ico_tF'_t) \\
+  X(T)\times\icap_tY(F_{t})\times \Iso(\ico_tF_{t}, \ico_tF_{t}) \arrow{u}{(\ico_tf_t)_*} \arrow{r}{\bar\gamma_{F}} & Z(\ico_tF_{t}) \arrow{u}{C(\ico_tf_t)}
+\end{tikzcd}\]
+Going up then right yields 
+\[ (x,\icap_ty_t,id) \mapsto (x,\icap_ty_t,\ico_tf_t) \mapsto \bar\gamma_F(x,\icap_ty_t,\ico_tf_t) = \bar\gamma_{F'}(x,\icap_tY(f_t)(y_t),id) = \gamma_{F'}(a,\icap_tY(f_t)(y_t)),\]
+while right then up yields
+\[(x,\icap_ty_t,id) \mapsto \gamma_F(x,\icap_ty_t) \mapsto Z(\ico_tf_t)\gamma_{F}(x,\icap_tY(f_t)(y_t)),\]
+as desired.
+\end{proof}
+
+\subsection{$G$-operads}
+We define $G$-operads to be monoids in $(\ST,\circ)$, and by the above Theorem, this is equivalent to the classical definition of $G$-operads. However, we now have more structure maps, given by the new presentation:
+
+\todo[inline]{We need ``constant on orbits'' so that $\ico_{(t,s)}\cong \ico_t\ico_s$; else, the $G$-action on the index doesn't have to be the same! This equivalence is needed for associativity and unitality}
+\todo[inline]{undo all the work I did today allowing non-orbit-constant $F$'s}
+\begin{theorem}
+  A {\em $G$-operad} $\O$ is equivalently a list of spaces $\O(T)$ for all $T\in\SetG$, natural in $T$, along with a unit $1\in \O(*)$ and composition maps $\gamma_F:\O(T)\times\icap_tO(F_t)\to\O(\ico_tF_t)$ for all $F: T\to \Set^G$, which are:
+  \begin{itemize}\itemsep-4pt
+  \item Natural in $T$: $\gamma_F(\O(\sigma)x',\icap_tx_t) = \O(\hat\sigma)\gamma_{F\sigma}(x',\icap_sx_{\sigma s})$ 
+  \item Natural in $F$: $\gamma_{\ico_tcodom(f_t)}(x,\icap_t\O(f_t)(x_t)) = \O(\ico_tf_t)\gamma_F(x,\icap_tx_t)$
+  \item Suitably $G$-variant:$g.\gamma_F(x,\icap_ty_t) = \gamma_F(\O(g_F^{-1,\vee})(g.x),\icap_tgy_{g_F(t)})$
+  \item Unital:
+  \item Associative: for all choices where these maps are defined, we have a commuting diagram
+    \begin{diagram}
+      \O(T)\times \icap_t(O(F_t)\times \icap_s\O(H^s_t)) & \rTo^{\cong} & (\O(T) \times \icap_t\O(F_t))\times \icap_{(t,s)}\O(H^t_s) & \rTo^{\gamma_F\times 1} & \O(\ico_tF_t)\times \icap_{(t,s)}\O(H^t_s)\\
+      \dTo^{1\times \icap_t\gamma_{H^t}} &&&& \dTo^{\gamma_H}\\
+      \O(T)\times \icap_t(\O(\icap_sH^t_s)) & \rTo^{\gamma_{HF}} & \O(\ico_t\ico_sH^t_s)) & \rTo^{\cong} & \O(\icap_{(t,s)}H^t_s)
+    \end{diagram}
+  \end{itemize}
+for all $F:T\to\SetG$, $\sigma: S\to T$, $x'\in \O(S)$, $x\in\O(T)$, $x_t\in\O(F_t)$, and $f_t: F_t\to F'_t$, and moreover are suitably associative and unital:\qed
+\end{theorem}
+\todo[inline]{include UNITALITY, ASSOCIATIVITY}
+
+\begin{example}[The Endomorphism Operad for a space $X$]
+  Given a $G$-space $X$, we have the usual endomorphism operad $End(X)(n) = \TopG(X^n,X)$. The above theory says we should define $End(X)(T) := End(X)(n)\times_{\Sigma_n}\Iso(n,T)$. In our new indexing presentation, we would hope to have $End(X)(T) \cong \TopG(N^X, X)$. This is in fact true; the map $[f,\phi]\mapsto(h\mapsto f(h\phi))$ is $\Sigma_n$-equivariant (where we think of $X^n$ as a {\em right} $\Sigma_n$-space) and a $G$-map. 
+\end{example}
+\todo[inline]{finish this}
+
+
+
+\subsection{Algebras over $G$-Operads}
+\todo[inline]{finish this}
+
+
+
+
+\chapter{Other Approaches: Multicategories and Caterads}
+Another way of possibly presenting more of the information inherent in a $G$-operad is through multicategories or other related constructions, such as PROPs or caterads. We begin with multicategories:
+
+\section{Leinster Multicategories}
+\subsection{Introduction}
+\newcommand{\T}{\text{$\mathcal{T}$}}
+\todo[inline]{intro to Leinster generalized multicategories; some may go in an appendix}
+
+\subsection{Option 1 = Above Chapter}
+We define a monad on $\Top^G$. Let $\mathcal{U}$ be a complete $G$-set universe given by the direct sum of countably-many copies of every orbit $G/H$. Now, choose representatives $\set{T_\alpha}$ of $G$-isomorphism classes, and define $\T: \Top^G\to \Top^G$ by $X\mapsto \coprod_\alpha\TopG(T_\alpha, X)$. 
+\begin{lemma}
+  $\T$ is a monad
+\end{lemma}
+\begin{proof}
+  Somewhat annoying  - have to go into $\mu$ and $\eta$, and $\mu$ in particular is hard since we only have iso classes of $G$-sets
+\todo[inline]{do I want to do this}
+\end{proof}
+\begin{lemma}
+  $\T$ is a cartesian monad.
+\end{lemma}
+\begin{proof}
+  $Top^G$ is closed under pullbacks, so the category is cartesian. Moreover, $\T$, $\eta$, and $\epsilon$ are all cartesian
+\todo[inline]{prove this, even though it is remarkably annoying}
+\end{proof}
+
+We make a couple of observations:
+\begin{itemize}\itemsep-4pt
+\item $\T(*) = \coprod_\alpha\TopG(T_\alpha,*) = \set{T_\alpha}$
+\item ANYTHING ELSE \todo{anything else}
+\end{itemize}
+
+Thus, using Leinster's terminology, a {\em $(\Top^G, \T)$-operad} is a monad in $(Top^G,\T)$-multicategories over the one-point $G$-space; that is, it is a $G$-space $C$ together with a $G$-map $d: C\to \set{T_\alpha}$, a chosen element $1\in C$ with $d(1) = *$, and a map $comp: C\circ C\to C$ where $C\circ C = \sets{(f,c)\in \coprod_\alpha\TopG(T_\alpha,C)\times C}{dom(f) = d(c)}$ such that
+\begin{renumerate}
+\item $d(comp(f,c)) = \icap_{t\in dom(f)}df(t)$
+\item $comp(1_{d(c)},c) = c$ for $1_{d(c)}: d(c) \to * \overset{1}{\to} C$
+\item $comp(*\to c, 1) = c$
+\item $comp$ is associative and stuff \todo{and stuff}
+\end{renumerate}
+
+Translating this into more familiar language, we have a collection of $G$-spaces $C(T)$ for each $T\in \set{T_\alpha}$, a chosen unit $1\in C(*)$, and composition maps $\gamma:C(T)\times \prod_tC(F_t)\to C(\coprod_tF_t)$ which are ``jointly equivariant'': LHS is not a true $G$-space, since $g.(f,c) = (g.f,gc)$ and $g.f$ relates to $\prod_tF_{g^{-1}t}$, a different space. 
+
+\todo[inline]{Problems: defining nice symmetry actions here is possible, if difficult and somewhat ad-hoc. I'm not sure what we *gain* from using this presentation, except it would another way to realize the generalization we already did above...}
+
+\subsection{Option 2 = bad choice for PROPs}
+Now, we consider the ``free symmetric strict monoidal category'' functor. This is a cartesian monad (see \cite{leinster_higher_2003} pg. SOMETHING \todo{find this}), and we consider $(\Top^G,\mathcal{F})$-multicategories where our category of colors is $\O_G$, the orbit category of our group $G$. This gives us a similar situation to work in, except now we have spaces $C(T,G/H)$ and our composition is as would be expected in their scenario. 
+
+PROBLEM: This requires ``too much information''. For example, we would want the ``endomorphism multicategory'' to look like ``all maps $N^TX\to N^{G/H}X$'' with morphism commuting squares, $d$ the domain functor, $c$ the codomain functor. However, these assignments of domain and codomain have to be {\em functorial} here, meaning that a square
+\begin{diagram}
+  N^TX & \rTo^F & N^{T'}X\\
+  \dTo^f && \dTo^{f'}\\
+  N^{G/H}X & \rTo^{H} & N^{G/H'}X
+\end{diagram}
+in $\Top^G$ has to induce maps $G/H\to G/K$ and $T\to S$ (or the opposite, depending on if the colors are $\O_G$ or $\O_G^{op}$). However, $N^{(\blank)}X$ is clearly {\em not} full (e.g. maps $X^n\to X^n$ are not just permutations), and this precludes the ability to functorially assign maps in the other direction.
+
+
+\section{Symmetric Multicategories}
+\renewcommand{\F}{\text{$\mathcal{F}$}}
+There are other notions of ``multicategory'' which are more appropriate to our setting.
+In \cite{cheng_weak_2002}, there is a notion of a general symmetric multicategory with a category of objects. This is based on the ``free symmetric strict monoidal category'' monad:
+\begin{defn}
+  Given a category $\C$, the {\em (right) free symmetric strict monoidal category generated by $\C$} is a new category $\F\C$ which has as objects lists $(x_1,\ldots, x_n)$ of elements of $\C$, and as maps $(x_1,\ldots, x_n)\to (y_1,\ldots, y_n)$, lists of the form $(\sigma; f_1,\ldots, f_n)$ where $\sigma\in\Sigma_n$ and $f_i: x_{\sigma i}\to y_i$. The tensor product is given by concatination, with the emtpy list as the unit. 
+\end{defn}
+Some remarks:
+\begin{enumerate}
+\item Composition is slightly tricky: the ``right'' adjective comes from the action of $\Sigma_n$ on our lists and how these actions compose. With this setup, we have 
+\[(\tau; h_1,\ldots, h_n) \circ (\sigma; f_1,\ldots, f_n) = (\sigma\tau, h_1f_{\tau 1}, \ldots, h_nf_{\tau n}).\]
+This gives the hom-set $\F\C(x,\ldots,x; y)$ a right action of $\Sigma_n$.
+\item We would have defined a ``left'' monad, where maps would be of the form $(\sigma; f_1,\ldots,f_n)$ where this time $f_i$ goes from $x_i\to y_{\sigma i}$. This would change the above composition to $(\tau\sigma,h_{\sigma 1}f_1,\ldots,h_{\sigma n}f_n)$, and the action to a left action.
+\item This is clearly a monad; the unit is the inclusion of the length-1 lists, and multiplication given also by concatination. 
+\end{enumerate}
+
+
+\begin{defn}
+  A {\em symmetric multicategory} \cite{cheng_weak_2002} $Q$ is given by the following information:
+  \begin{itemize}\itemsep-4pt
+  \item A category $C$ of objects
+  \item for all $p\in\F\C^{op}\times \C$, a set $Q(p)$ of arrows. If $p = (x_1,\ldots, x_n;x)$ then $f\in Q(p)$ has domain $(x_1,\ldots, x_n)$ and codomain $x$.
+  \item For all $f: x\to y$ in $\C$, an arrow $i(f)\in Q(x;y)$. In particular, let $1_x = i(1_x)\in Q(x;x)$
+  \item Composition morphisms: $Q(x_1,\ldots, x_n;x)\times Q(x_1^1,\ldots, x_{k_1}^1; x_1)\times\ldots\times Q(x_1^n,\ldots,x_{k_n}^n;x_n) \to Q(x_1^1,\ldots x_{k_1}^1,x_1^2,\ldots, x_{k_n}^n)$ for each $x_i\in \C$
+  \item A symmetric action $\sigma: Q(x_1,\ldots, x_n;x)\to Q(x_{\sigma 1}, \ldots, x_{\sigma n};x)$ for all $\sigma\in\Sigma_k$
+  \end{itemize}
+satisfying, for  $f\in Q(x_1,\ldots, x_n;x)$, $g_i\in Q(x_1^i,\ldots, x_{k_i}^i;x_i)$, $\sigma,\sigma'\in\Sigma_n$, and $\tau_i\in \Sigma_{k_i}$:
+\begin{renumerate}\itemsep-4pt
+\item associative composition
+\item $1_x\circ f = f = f\circ (1_{x_1}, \ldots, 1_{x_n})$
+\item $(f\sigma)\sigma' = f(\sigma\sigma')$
+\item $(f\sigma)\circ (g_{\sigma 1},\ldots,g_{\sigma n})=(f\circ (g_1,\ldots, g_n))\sigma(k_1,\ldots, k_n)$
+\item $f\circ (g_1\tau_1,\ldots, g_n\tau_n) = (f\circ (g_1,\ldots, g_n))\tau_1\oplus\ldots\oplus\tau_n$
+\item $i(f\circ g) = i(f)\circ i(g)$
+\end{renumerate}
+\end{defn}
+\begin{defn}
+  An {\em algebra} $F$ over a symmetric multicategory $Q$ is a functor $F: \C\to \Set$ with natural associative and unital action morphisms $Q(x_1,\ldots, x_n; x)\times F(x_1)\times\ldots\times F(x_n)\to F(x)$.
+\end{defn}
+
+This definition can be easily generalized. For one, we notice that this object can be realized as a functor $Q: \F\C^{op}\times\C\to \Set$ with additional structure and properties; moreover, there is nothing special about $\Set$ here beyond that is it (closed) symmetric monoidal. Thus, given a cosmos (closed symmetric monoidal category) $\V = (\V,\otimes, I)$:
+\begin{defn}
+  A {\em symmetric multicategory enriched over $\V$ with category of colors $\C$} is given by:
+ \begin{itemize}\itemsep-4pt
+  \item A category $C$ of objects
+  \item A functor $Q: \F\C^{op}\times \C\to \V$
+  \item For all $f: x\to y$ in $\C$, an arrow $i(f)\in Q(x;y)$. In particular, let $1_x = i(1_x)\in Q(x;x)$
+  \item Composition morphisms $\gamma:Q(x_1,\ldots, x_n;x)\otimes Q(x_1^1,\ldots, x_{k_1}^1; x_1)\otimes\ldots\otimes Q(x_1^n,\ldots,x_{k_n}^n;x_n) \to Q(x_1^1,\ldots x_{k_1}^1,x_1^2,\ldots, x_{k_n}^n)$ for each $x_i\in \C$
+%  \item A symmetric action $\sigma: Q(x_1,\ldots, x_n;x)\to Q(x_{\sigma 1}, \ldots, x_{\sigma n};x)$ for all $\sigma\in\Sigma_k$
+  \end{itemize}
+satisfying, for  $f\in Q(x_1,\ldots, x_n;x)$, $g_i\in Q(x_1^i,\ldots, x_{k_i}^i;x_i)$, $\sigma,\sigma'\in\Sigma_n$, and $\tau_i\in \Sigma_{k_i}$:
+\begin{renumerate}\itemsep-4pt
+\item associative composition;
+\item $1_x\circ f = f = f\circ (1_{x_1}, \ldots, 1_{x_n})$;\\
+Moreover, the symmetric action is given by the functorality: $(\blank).\sigma = Q((\sigma;1),1): Q(x_1,\ldots, x_n;x)\to Q(x_{\sigma 1},\ldots, x_{\sigma n};x)$. We still want it to play nice with composition:
+\item $(f\sigma)\sigma' = f(\sigma\sigma')$;
+\item $(f\sigma)\circ (g_{\sigma 1},\ldots,g_{\sigma n})=(f\circ (g_1,\ldots, g_n))\sigma(k_1,\ldots, k_n)$;
+\item $f\circ (g_1\tau_1,\ldots, g_n\tau_n) = (f\circ (g_1,\ldots, g_n))\tau_1\oplus\ldots\oplus\tau_n$;
+\item $i(f\circ g) = i(f)\circ i(g)$;\\
+Lastly, we need functorality and $i$ to match up:
+\item $Q((\sigma;f_1,\ldots, f_n);1) = \gamma\circ (Q((\sigma;1),1)\times i(f_1)\times\ldots \times i(f_n)): Q(x_1,\ldots, x_n;x)\to Q(y_1,\ldots, y_n; x)$.
+\todo{do we need this last condition?}
+\todo[inline]{is it required that, given $1_x = i(1_x)\in Q(x;x)$, does $i(f) = Q_f(1_x)$, where $Q_f = Q((1_x; f))$?}
+\end{renumerate}
+\end{defn}
+This definition also allows us to write morphims of multicategories more easily: these are natural transformations which preserve all the data. Algebras are defined as before: an {\em algebra} over $Q$ is a functor $F:\C\to \V$ with natural associative and unital action morphisms $Q(x_1,\ldots, x_n; x)\otimes F(x_1)\otimes\ldots\otimes F(x_n)\to F(x)$ in $\V$.
+\todo[inline]{in order for this to be super general, we need to define ``elements'' of $\V(A,B)$ or whatever}
+
+
+\subsection{$G$-Symmetric Multicategories}
+\newcommand{\OGI}{\text{$\O_G^{\scriptsize{\mbox{Iso}}}$}}
+We define a {\em $G$-symmetric multicategory} to be a symmetric multicategory enriched over $\Top^G$ with category of objects $(\O_G^{\scriptsize{\mbox{Iso}}})^{op}$, the orbit groupoid of our group.
+\begin{remark}
+Another option would be all of $\O_G$ Problems: the ``free symmetric strict monoidal'' category on this is not something particularly nice, since we only have maps between objects with the same number of orbits. A nicer category would the ``free symmetric semicartesian monoidal'' category, where we formally add an initial object 0, then take the free symmetric strict monoidal category, and then add isomorphisms of the form $(x_1,\ldots, x_n,0)\cong (x_1,\ldots,x_n)$. This would yield $Set^G$ of all $G$-sets and $G$-maps.
+\end{remark}
+\begin{remark}
+  We observe that $\F\O_G = \SetGI$, with $(G/H_1,\ldots, G/H_r)$ identified with $G/H_1\cprod\ldots G/H_k$, so we have a functor $Q: \SetGI\times(\OGI)^{op}\to \Top^G$.
+\end{remark}
+
+%Explictly, we see that a $G$-symmetric multicategory consists of the following data:
+%\begin{itemize}\itemsep-4pt
+%\item a functor $Q: \SetGI \times \O_G^{op} \to \Top^G$
+%\item For each $f\in\O_G^{op}(T,S)$, an associated element $i(f)\in Q(T,S)$
+%\item composition maps $\gamma:Q(G/H_1\cprod\ldots\cprod G/H_r, G/K)\times Q(T_1, G/H_1)\times\ldots\times Q(T_r,G/H_r) \to Q(T_1\cprod\ldots\cprod T_r, G/K)$ 
+%\end{itemize}
+%subject to the restrictions
+%\begin{renumerate}
+%\item $i(id_{G/K})\circ f = f = f\circ (i(id_{G/H_1}, \ldots, id_{G/H_r}))$ for all $f\in Q(G/H_1%\cprod\ldots\cprod G/H_r, G/K)$
+%\item composition is associative
+%\item The symmetric action on $Q$, given by $\sigma = Q((\sigma;id),id): Q(G/H_1\cprod\ldots\cprod G/H_r,G/K) \to Q(G/H_{\sigma 1}\cprod\ldots\cprod G/H_{\sigma r},G/K)$ plays nice with composition:
+%  \begin{align*}
+%    (f\sigma)\circ (h_{\sigma 1}\cprod\ldots\cprod h_{\sigma r}) &= (f\circ (h_1\cprod\ldots\cprod h_r))\sigma(m_1,\ldots,m_r); \qquad \mbox{ and }\\
+%      f\circ (h_1\tau_1\cprod\ldots\cprod h_r\tau_r) &= (f\circ(h_1\cprod\ldots\cprod h_r))(\tau_1\oplus\ldots\oplus\tau_r)
+%  \end{align*}
+%\item $i(f\circ h) = i(f)\circ i(h)$
+%\item $Q(\sigma,f_1,\ldots, f_r) = \gamma\circ(\sigma\times i(f_1)\times\ldots\times i(f_r))$
+%\end{renumerate}
+
+\begin{example}
+  Given a $G$-space $X$, we define the {\em endomorphism $G$-symmetric multicategory} $End(X)$ to be given by $End(X)(T,G/K) = \TopG(N^TX, N^{G/K}X)$, with $i(f) = N^fX: N^{G/H}X\to N^{G/K}X$ for $f: G/K\to G/H$ in $\OGI$, and composition given as usual: since $N^{G/H\cprod G/K}X \cong N^{G/H}X\times N^{G/K}X$, we write:
+\begin{align*}
+  \gamma: &\TopG(N^{G/H_1}X\times\ldots\times N^{G/H_r}X,N^{G/K}X)\times \TopG(N^{T_1}X,N^{G/H_1}X)\times\ldots\times \TopG(N^{T_r}X,N^{G/H_r}X)\\
+  &\overset{1\times \Phi}{\longto}\TopG(N^{G/H_1}X\times\ldots\times N^{G/H_r}X,N^{G/K}X)\times\TopG(N^{T_1}X\times\ldots N^{T_r}X, N^{G/H_1}X\times\ldots\times N^{G/H_r}X)\\
+  &\overset{\circ}{\longto} \TopG(N^{T_1}X\times\ldots N^{T_r}X, N^{G/K}X).
+\end{align*}
+\end{example}
+\begin{defn}
+  Given a space $X$, we define a {\em $Q$-algebra structure} on $X$ to be given as a $Q$-algebra structure on $End(X)$. 
+\end{defn}
+
+\subsection{$G$-Symmetric Multicategories and $G$-Operads}
+In order for this to be a good generalization, we should be able to recover a regular $G$-operad from a $G$-symmetric multicategory, and $End(X)$ and algebras in general should be compatible.
+\begin{defn}
+  Given a $G$-symmetric multicategory $Q$, define the operad $\O_Q$ by letting $\O_Q(n)$ be the right $G\times\Sigma_n$-space $Q(G/G,\ldots, G/G; G/G)$; composition descends directly from composition on $Q$, and remains associative and unital. 
+\end{defn}
+Equivalently, define $\O_Q$ as the composition $\Sigma^{op}\overset{j}{\longto}\SetGI\times(\OGI)^{op}\overset{Q}{\longto} \Top^G$ where $j$ sends $n$ to precisely $(G/G,\ldots, G/G; G/G)$. Moreover, this shows that this assignment is functorial in $Q$.
+
+\begin{example}
+  We see $\O_{End(X)}(n) := \TopG(N^nX,N^1X) =\TopG(X^n,X) = End(X)(n)$, as desired.  
+\end{example}
+\begin{prop}
+  If $X\in\Top^G$ is a $Q$-algebra, then $X$ is a $\O_Q$-algebra. \qed
+\end{prop}
+
+Conversely, given a $G$-operad $\O$, we follow the example of Kelly in \cite{kelly_operads_2005} and define $Q_\O$ to be the functor $(T,G/H)\mapsto (N^{G/H}\O)(T)$, where $N^T\O$ is the $T$-norm on symmetric sequences defined above. \todo{make sure that I've clearly defined everything which is denoted $N^TX$}. This is contravariant in $G/H$ and covariant in $T$, as desired. Moreover, let $i(f) = N^f\O$, and composition is defined as expected:
+\begin{align*}
+  \O^{\otimes n}(m)\times \O^{\otimes n'}(m') &\cong \int^{m_i,m'_i}\O(m_1)\times\ldots\O(m_n)\times\O(m'_1)\times\ldots\O(m'_{n'})\times \Iso(m_1+\ldots+m_n,m)\times \Iso(m'_1+\ldots+m'_{n'},m')\\
+  &\overset{1\times (\times)}{\longto} \int^{m_i,m'_i}\O(m_1)\times\ldots\O(m_n)\times\O(m'_1)\times\ldots\O(m'_{n'})\times \Iso(m_1+\ldots+m_n+m'_1+\ldots+m'_{n'},m+m') = \O^{\otimes n+n'}(m+m').
+\end{align*}
+The rest of the details are clear. Finally, we observe that going up from a $G$-operad to a $G$-symmetric monoidal category and then back down is the identity. 
+
+Now, we would like to show that every $\O$-algebra is a $Q_\O$-algebra. However, we do not have the result that $Q_{End(X)}\cong End(X)$ as $G$-symmetric monoidal categories. 
+%Instead, $Q_{End(X)}(S,T) = \TopG(\TopG(N^TX,X),\TopG(N^SX,X))$, and there is a natural map $End(X)\to Q_{End(X)}$, the inclusion of the natural maps. 
+However, all hope is not lost. If $X$ is an $\O$-algebra, we have a map $\O\circ X\to X$,
+\todo{make sure we define the symmetric sequence generated by a space $X$, so this makes sense, and moreover that $N^T\ul X = ul{N^TX}$ so this construction remains true.}
+so we have maps $N^T(\O\circ X)\to N^TX$; hence by Lemma \ref{normcomp} we have maps $N^T\O\circ X\to N^TX$ for all $T$. By definition of the composition product (and letting $T = G/K$), these break down into maps $(N^{G/K}\O)(T)\times N^TX\to N^{G/K}X$, as desired.
+\todo{make sure we show that $\O$-algebras $X$ have strucutre maps $\O(T)\times N^TX\to X$}
+
+
+
+%NEW SECTION: CATERADS
+\section{Caterads}
+\renewcommand{\A}{\text{$\mathcal{A}$}}
+\renewcommand{\B}{\text{$\mathcal{B}$}}
+
+Here, we genearlize May's caterad construction \cite{may_caterads_2004}, a generalization of the PROP construction of Adams and MacLane \cite{maclane_categorical_1965}.
+
+\subsection{Symmetric Caterads}
+Let $\V=(\V,\otimes, I)$ be a closed symmetric monoidal category. 
+\begin{defn}
+  A {\em caterad in $\C$} is an enriched permutative category $\A$ over $\C$ together with a permutative functor $i:\Sigma\to \A_0$ that is a bijection on objects. A map $\psi: \A\to\B$ of caterads is an enriched permutative functor such that $\psi\circ i_\A = i_\B$.  
+\end{defn}
+This is an informationally dense definition. Let's unpack it, as May does. Since $i$ is a bijection, $Ob(\A) = \sets{p}{p\geq 0}$. We say $\A$ is enriched over $\C$ to mean that there are hom-objects $\A(q,r)\in\C$ with...
+\todo[inline]{copy May's Caterads for this section}.
+
+Algebras:
+\begin{remark}
+  We may be called out for actually misusing what May wants. In particular, he would like to focus on algebras $F$ which are only {\em lax} monoidal functors $\Sigma^{op}\to\V$, which in our setup it is the strong monoidal functors which matter. Strong monoidal requires that all symmetric monoids $F$ are free on $F(1)$: $F(n)\cong F(1)^{\otimes n}$. Since our goal is to study spaces, or symmetric sequences with only information in degree 1, this is not a problem. Our use of the term ``caterad'' is because May's definition is sufficiently explicit and general for our use, even though we are restricting and generalizing a particular case.
+\end{remark}
+
+
+%stuf
+\subsection{$G$-Caterads}
+As we have done previously, we are going to replace our use of the permutative category $\Sigma$ with the larger category $\Set^G$ (in this case, we want to ensure off the bat that all morphisms are $G$-equivariant). We define: \todo{do we actually need this to be true? or can we use $\SetG$?}
+\begin{defn}
+  A {\em $G$-caterad} is an enriched permutative category $\A$ over $(\Top^G,\times, \set{*})$ together with a permutative functor \todo{if we are going with $\SetG$, this should be $G$-functor} $i: ((\SetGI)^{op},\coprod,\varnothing)$ that is bijective on objects.
+\end{defn}
+That is:
+\begin{itemize}\itemsep-4pt
+\item $\A$ has objects $\Set^G$;
+\item $\A$ has morphism objects $\A(S,T)\in\Set^G$ with identity morphisms $1_s\in\A(S,S)$ and a composition law $\mu: \A(S,T)\times\A(W,S)\to\A(W,T)$ in $\Set^G$, satisfying the ussual unitality and associativity laws;
+\item for all maps $f\in(\SetGI)^{op}(S,T)=\Iso(T,S)$, a map $i(f)\in\A(S,Y)$;
+\item Given any map $f\in\A(S,T)$, $h\in\A(W,R)$, we have maps $\A(f,h): \A(T,W)\to\A(S,R)$ in $\Set^G$, given by $\phi\mapsto\mu((h,\phi,f))$;
+\item $\A$ has a symmetric monoidal product $S\otimes T = S\coprod T$, with identity $\varnothing$ and natural twist isomorphism $\tau\in \A(S\coprod T, T\coprod S)$ given by $i(\tau_{S,T})$. This comes with a strictly associative and unital system of maps $\Phi: \A(S,T)\times \A(S',T')\to\A(S\coprod S',T\coprod T')$ in $\Set^G$ such that $\Phi$ is an enriched bifunctor: the diagram below commutes in $\Set^G$;
+  \begin{diagram}
+    \A(S,T)\times \A(W,S) \times \A(S',T')\times \A(W',S') & \rTo^{\mu\times\mu} & \A(W,T)\times \A(W',T') \\
+    \dTo^{(\Phi\times\Phi)\circ(id\times \tau\times id)} && \dTo^\Phi\\
+    \A(S\coprod S',T\coprod T')\times \A(W\coprod W', S\coprod S') &\rTo^\mu & \A(W\coprod W', T\coprod T')
+  \end{diagram}
+The enriched naturality of $\tau$ can be realized as the commutativity of the diagram
+\begin{diagram}
+  \A(S,T)\times \A(S',T') & \rTo^\Phi & \A(S\coprod S', T\coprod T')\\
+  \dTo^\tau && \dTo_{\A(\tau_{S',S},\tau_{T,T'})}\\
+  \A(S',T')\times \A(S,T) & \rTo^\Phi & \A(S'\coprod S, T'\coprod T).
+\end{diagram}
+\end{itemize}
+
+As we see, this definition contains a lot of the same elements we have seen in previous constructions. I believe this one has the most strength, as well as the most flexibility.
+
+\begin{example}
+  It wouldn't be a good construction if we didn't have the ``endomorphism caterad''. Given $X\in\Top^G$, define $End(X)$ to be the caterad with hom-$G$-spaces $End(X)(T,S) = \TopG(N^TR,N^SR)$. The identity and composition maps are obvious, and since $N^TX$ is strong monoidal in $T$, the multiplication map is just $(\times)$ on morphisms. Lastly, since $N^TX$ is contravariant in $T$, we have our permutative functor $i: (\SetGI)^{op}\to End(X)$.
+\end{example}
+
+\todo[inline]{Does $i(f) = Q_f(i_x)$?}
+\todo[inline]{Does $\A(S,T\coprod T') = \A(S,T)\times \A(S,T')$?}
+
+\subsection{Algebras over Caterads}
+In the non-equivariant case, we considered (strong) symmetric monoidal functors $F: \Sigma^{op}\to\Top^G$. Now, we call a strong symmetric monoidal functor $F:(\SetGI)^{op}\to \Top^G$ a {\em $G$-symmetric monoid}. A $G$-symmetric monoid $F$ is an {\em $\A$-algebra in $\Top^G$} if we have an enriched product preserving functor $\F: \A\to\Top^G$ such that $\F\circ i = F$. 
+
+Just as in the non-equivariant case, we can break this down:
+\begin{itemize} \itemsep-4pt
+\item The fact the $\F i = F$ implies that $\F(T) = F(T)$ for all $T$
+\item $\F$ being an enriched functor means we have evaluation maps $\epsilon: \A(T,S)\times F(T)\to F(S)$ which aare associative and unital;
+\item Functorality also implies that the following diagram commutes for all $f\in \A(T,S)$:;
+  \begin{diagram}
+    F(T)  & & & & \\
+    \dTo^{f\times id} & \rdTo^{\F(f)} & & &\\
+    \A(T,S)\times F(T) & \rTo_\epsilon & F(S) & &
+  \end{diagram}
+In particular, $\F i = F$ implies that for all $f\in \Iso(S,T)$;
+  \begin{diagram}
+    F(T)  & & & & \\
+    \dTo^{i(f)\times id} & \rdTo^{F(f)} & & &\\
+    \A(T,S)\times F(T) & \rTo_\epsilon & F(S) & &
+  \end{diagram}
+\item Product preserving implies the following commutes:
+  \begin{diagram}
+    \A(T,S)\times \A(T',S') \times F(T)\times F(T') &\rTo^{(\epsilon\times \epsilon)\circ (id\times \tau \times id)} & F(S)\times F(S')\\
+    \dTo^{\mu\times \mu} && \dTo^\mu\\
+    \A(T\coprod T', S\coprod S') \times F(T\coprod T') & \rTo^{\epsilon} & F(S\coprod S')
+  \end{diagram}
+\end{itemize}
+
+\begin{prop}
+  The action maps $\epsilon: \A(S,T)\times F(S)\to F(T)$ of an $\A$-algebra are natural in $T$ and $S$
+\end{prop}
+\todo[inline]{prove this}.
+
+Again, since we are restricting ourselves to strong symmetric monoids, all monoids are free:
+\[F(T) \cong F(n)\times_{\Sigma_n}\Iso(n,T) \cong F(1)^n\times_{\Sigma n}\Iso(n,T)\cong N^T(F(1)).\]
+Given $X\in \Top^G$, let $\F X$ be the free $G$-symmetric monoid on $X$, so $(\F X)(T) = N^TX$. An {\em $\A$-algebra structure} on $X$ is defined to be an $\A$-algebra structure on $\F X$.
+\begin{prop}
+  $\A$-algebra structures on $X$ correspond bijectives to maps $\A\to End(X)$ of caterads. 
+\end{prop}
+
+\subsection{Between $G$-caterads and $G$-operads}
+Given a $G$-caterad, we define the $G$-operad $\O_\A$ by $\O_\A(n) := \A(n,1)$ as a left $G$- right $\Sigma_n$-space. The composition map of the operad is defined via the composition and enriched monoidal strucutre maps:
+\[\gamma: \A(n,1)\times \A(k_1,1)\times\ldots\times\A(k_n,1) \overset{id\times (\times)}{\longto} \A(n,1)\times \A(k_1+\ldots+k_n,1) \overset{\mu}{\longto} \A(k_1+\ldots+k_n,1).\]
+This is again unital, associative, plays nicely with symmetric group actions, and is clearly functorial.
+
+If $F = \F X$ is an $\A$-algebra, then $X$ is an $\O_\A$ algebra: the structure maps are exactly our action maps $\epsilon:\A(n,1)\times X^n\to X$. 
+
+Conversely, given a $G$-operad, define a $G$-caterad $\A_\O$ by $\A_\O(S,T):= (N^T\O)(S)$ (a la \cite{kelly_operads_2005}). We have a unit element of $(\N^T\O)(T)$, given by the image of $[\icap_t\eta,j]$ in the component indexed by $F: t\mapsto 1$, where $\eta\in\O(1)$ is the operad unit and $j: \ico_s*\to S$ is the canonical isomorphism. Further, any map $f: S\to T$ is represented by the element $[\icap_seta,f\circ j]$ (which follows the possible pattern $i(f) = Q_f(1_x)$ hypothesized earlier).
+\todo{make sure to take care of this statement, if it gets proved one way or the other}
+The composition law follows by Lemma \ref{normcomp}: we have monoid maps $\O\circ \O \to \O$, which induce maps $N^T\O\circ \O \to N^T\O$; by definition of the composition product, this breaks down into maps $N^T\O(S)\times N^S\O(W) \to N^T\O(W)$, or precisely maps $\A_\O(S,T)\times\A_\O(W,S)\to \A_\O(W,T)$. Similarly, the construction of the norm and the mapping product $(f,h)\mapsto f\times h$ yields a map $\A_\O(S,T)\times \A_\O(S',T')\to\A_\O(S\coprod S', T\coprod T')$. Moreover, since these maps come from the structure maps of operads, they are unital, associative, and play nice.
+\todo{stop saying/never say ``play nice''}
+Furthermore, if $X$ is an $\O$-algebra, then $X$ (or really, $\F X$) is an $\A_\O$-algebra. Indeed, we have maps $\O\circ X\to X$ defining the $\O$-algebra structure, and then again by Lemma \ref{normcomp} we have maps $N^T\O\circ X\to N^TX$. This breaks down into maps $N^T\O(S)\times N^SX(1)\to N^TX(1)$.
+\todo[inline]{verify that this is indeed an algebra map. This seems likely, since $i(f)$ is built out of units and the map we are trying to prove it commutes to}
+
+\todo[inline]{Is this some sort of left adjoint construction?}
+
+\todo[inline]{is $\O\to\A_\O$ functorial? what is $\A_{End(X)}$?}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%=======================================================
+
+
+\begin{appendices}
+  \chapter{Enriched Category Theory}
+  Let $\V = (\V,\otimes,I)$ be a symmetric monoidal category. A {\em $\V$-category} $\C$ consists of the following data:
+  \begin{itemize}\itemsep-4pt
+  \item A set of {\em objects} $\C_0$
+  \item For each $c,d\in\C_0$, a element $\C(c,d)\in\V$
+  \item For each $c\in\C_0$, a map $id_c:I\to\C(c,c)$ in $\V$
+  \item For each $c,d,e\in\C_0$, maps $\C(d,e)\otimes\C(c,d)\to\C(c,e)$ 
+  \end{itemize}
+  such that $id$ acts as a left and right unit under composition, and composition is associative.
+
+  If $\C$ and $\D$ are $\V$-categories, a {\em $\V$-functor} $F: \C\to\D$ is a set map $F_0: \C_0\to\D_0$ and a map in $\V$ $F_{c,d}: \C(c,d)\to\D(F_0c,F_0d)$ for all $c,d\in\C_0$ that sends the identity to the identity and respects composition. We denote by $\Cat_\V$ the category of $\V$-categories and $\V$-functors. 
+
+  Given two $\V$-functors $F,G:\C\to\D$, a {\em natural transformation} $\phi: F\to G$ consists of maps $\phi_c: I\to\D(Fc,Gc)$ in $\V$ for all $c\in\C$, satisfying the obvious naturality diagram. Denote by $[\C,\D]^\V$
+
+  \todo{copy/update/correct this from HHR paper}
+
+
+  \section{Enriched Colimits}
+  Let $\V$ be closed symmetric monoidal, and suppose it has all finite limits and colimits. Given a $\V$-category $\C$ and a $\V$-functor $F: \C\times\C^{op}\to \V$, we define the {\em enriched coend} $\int^{c\in\C}F(c)$ to be the object of $\V$ with the universal property that maps out of it to $Y$ correspond precisely to families of maps $F(c,c)\to Y$ that are extranatural in $c$. That is, we have
+  \[\int^{c\in\C}F(c) \cong \coeq\pr{\coprod_{c,c'\in\C}\C(c,c')\otimes F(c,c') \overset{\to}{\to} \coprod_{d\in\C}F(d,d)}.
+  \]
+  Given $\V$-functors $F:\C\to\V$ and $K:\C\to\D$, we define the {\em enriched left Kan extension of $F$ over $K$} to be 
+  \[L_KF(d):= \int^{c\in\C}\D(Kc,d)\otimes F(c),\]
+  if it exists. This has the universal property that maps out of $L_KF$ correspond precisely to families of maps $\D(Kc,d)\otimes F(c)\to Y(d)$ which are extranatural in $c$ and natural in $d$; that is, $L_KF$ is a $\V$-functor from $\D$ to $\V$ such that$[\C,\V]^V(F,Y\circ K)\cong [\D,\V]^\V(L_kF,Y)$ for all $\V$-functors $Y:\D\to\V$.
+  \todo{enriched adjunction}
+  \begin{prop}
+    If $\alpha$ is a $\V$-natural isomorphism, then $\alpha_*: \C(X,Y)\to\C(X,\alpha(Y))$ is a $\V$-isomorphism for all $X$ and $Y$. \qed
+  \end{prop}
+  \begin{prop}
+    If the unit of an enriched adjunction is an isomorphism, then $L$ is fully-faithful. \qed
+  \end{prop}
+  \begin{cor}
+    \label{fullyfaithful}
+    If $p:\C\to\D$ is fully-faithful, and then the functor $p_!: [\C,\V] \to [\D,\V]$ given by $p_1X = LpX$ is a fully-faithful $G$-functor, left adjoint to $p^*$.
+  \end{cor}
+  \begin{proof}
+    \todo[inline]{complete this proof/section/organize it so it makes sense!}
+
+  Something along the lines of:
+%FIX THIS/MAKE IT WORK
+ ``For full faithfulness, we observe that the left Kan extension comes with a natural transformation $\eta: X\to i^*(i_!X)$ for each $X\in [\Sigma,\TopG]^G$. But we have
+    \[i_!X(m) = \int^nX(n)\times\iso{n,m} \cong \int^nX(n)\times\Sigma(n,m) \cong X(m),\]
+    where the first congruence is by $i$ being fully-faithful, and the second by Yoenda reduction. Hence $\eta$ is a $\V$-natural isomorphism, and thus $i_!$ is fully-faithful.''
+  \end{proof}
+
+
+  \section{Equivariant Enriched Categories}
+  \label{equiv_enriched}
+  Let $\Top = (\Top, \times, S^0)$ be the symmetric closed monoidal category of pointed spaces (where all spaces are ``nice enough''), and let $\Top^G$ be the category of $G$-spaces and $G$-morphisms. A {\em (topological) $G$-category} is a category enriched over $\Top^G$, and a {\em $G$-functor} is a $\Top^G$-functor. Let $\Cat_G$ denote the category of $G$-categories and $G$-functors, and $\Cat_G(\C,\D)^G$ the category of $G$-functors and $G$-natural transformations. Since $\Top^G$ has elements, we have a nice description of $G$-categories, as just regular categories where the set $\C(a,b)$ has a $G$-space structure. Similarly, $G$-functors are just functors which are equivariant, and $G$-natural transformations are families of equivariant maps.
+
+  We have a nice way of extending the (topological) category $\Cat_G(\C,\D)^G$ into a $G$-category: let $\Cat_G(\C\,\D)$ be the category of $G$-functors and all natural transformations. This idea extends to the very category we started with. $\Top^G$ is a $G$-category, but the internal hom is the morphism $G$-space in the category $\TopG$: the objects are again $G$-spaces, but the morphism set is the collection of all continuous maps; $\Top^G(X,Y)$ is the fixed-point space $\TopG(X,Y)^G$. Similarly, the category of $G$-sets and equivariant bijections $\Set^G=\Set^G_{\mbox{\scriptsize Iso}}$ is not closed over itself, but instead over $\SetG$, the category of $G$-sets and all bijections.
+
+  For our exposition, we will mostly be working with the topological category of $G$-functors and equivaraint natural transformations; for convenience, we will write $[\C,\D]^G$ to mean $\Cat_G(\C,\D)^G$. Further, since in $\SetG$ and $TopG$, isomorphisms don't mean what they ``should'', we will only use the symbol ``$\cong$'' to mean ``congruent in the fixed-point category'', i.e. equivariantly isomorphic.
+
+  \todo[inline]{a word about existance of colimits in this environment, and if they do what is their G-action, since they only exist up to iso, and there are so many damn isos}
+
+
+\chapter{Covering Categories}
+\label{covering_cats}
+
+
+  \chapter{Random Results}
+\section{General Endomorphism Operads}
+We can define ``algebras over an operad $\O$'' in many different ways, but one which seems to make the most sense universally is as a map of operads from $\O$ to some ``endomorphism operad'' $End(X)$ for some object $X$. Now, traditionally, that object $X$ is in the target category $\V$ of the operad. However, we can define an ``endomorphism operad'' $End(C)$ for an object $C$ in any category $\C$ which is symmetric monoidal and enriched over $\V$: define $End(C)(n) = \ul\C(C^{\Box n},C)$, where $\ul\C$ is the enriched hom-object. So the question becomes, when does this actually give us a true operad?
+
+\subsection{Basic Enriched Category Theory}
+In this section, $V = V(\otimes, I)$ is a closed symmetric monoidal category, enriched over itself with internal hom object $\ul\V$, and 
+\newcommand{\uV}{\text{$\ul\V$}}
+\newcommand{\uC}{\text{$\ul\C$}}
+\begin{lemma}\label{claim1}
+  $\ul\V(I,Z) \cong Z$
+\end{lemma}
+\begin{proof}
+  $V(X,Z)\cong \V(X\otimes I, ) \cong \V(X,\uV(I,Z))$ is a series of bijections natural in $X$, so by set-theoretic Yoneda, $Z\cong \uV(I,Z)$. 
+\end{proof}
+
+\begin{lemma}\label{claim2}
+  $\uV(X,\uV(Y,Z))\cong\uV(X\otimes Y, Z)$
+\end{lemma}
+\begin{proof}
+  We compute
+  \begin{align*}
+    \V(W,\uV(X\otimes Y,Z)) &\cong \V(W\otimes (X\otimes Y),Z)\cong \V((W\otimes X)\otimes Y,Z)\cong \V(W\otimes X, \uV(Y,Z))\cong \V(W,\uV(X,\uV(Y,Z))).
+  \end{align*}
+Again, these bijections are natural in $W$, so set-theoretic Yoenda gives us our result.
+\end{proof}
+
+\begin{lemma}\label{claim3}
+  If $\uC(X,Y)\cong \uC(X',Y)$ for all $Y\in\C$, then $X\cong X'$ in $\C$.
+\end{lemma}
+\begin{proof}
+  We have that the set of $\V$-natural transformations
+\[\V-Nat(\uC(X,\blank), \ul\C(X',\blank)) \cong \V(I,\ul\C(X',X))\cong \C(X',X),\]
+and this string of bijections of hom-sets sends isomorphisms to isomorphisms. 
+\end{proof}
+
+\subsubsection{Basic Tensored Category Theory}
+Let $\C$ be a category enriched and tensored ($\odot$) over $V$.
+
+\begin{lemma}\label{claim4}
+  For $A,B\in \V$ $X\in \C$, we have $(A\otimes B)\odot X \cong A\odot (B\odot X)$.
+\end{lemma}
+\begin{proof}
+  We compute
+\[\ul\C((A\otimes B)\odot X, Y) \cong \ul\V(A\otimes B, \ul\C(X,Y)) \cong \ul\V(A,\ul\V(B,\ul\C(X,Y))) \cong \ul\V(A,\ul\C(B\odot X,Y))\cong \ul\C(A\odot(B\odot X), Y),\]
+natural in $Y$, so by Lemma \ref{claim3}, our result holds. 
+\end{proof}
+
+\begin{lemma}\label{claim5}
+  Similarly, $(A\otimes B)\odot X \cong (B\otimes A)\odot X$.
+\end{lemma}
+\begin{proof}
+  We compute $\ul\C((A\otimes B)\odot X, Y) \cong \ul\V(A\otimes B, \ul\C(X,Y)) \cong \ul\V(B\otimes A,\ul\C(X,Y))\cong \ul\C((B\otimes A)\odot X, Y)$, natural in $Y$, so again by Lemma \ref{claim3}, our result holds. 
+\end{proof}
+
+\begin{lemma}\label{claim6}
+  $I\odot X \cong X$.
+\end{lemma}
+\begin{proof}
+  We compute $\ul\C(I\odot X, Y)\cong \ul\V(I,\ul\C(X,Y)) \cong \ul\C(X,Y)$, with the last isomorphism by Lemma \ref{claim1}, so again by Lemma \ref{claim3}, our result holds.
+\end{proof}
+
+\subsubsection{Both Monoidal}
+Now suppose $\C = (\C,\Box, \Hom)$ is additionally closed monoidal.
+
+\begin{lemma}
+  \label{claim6b}
+  $\ul\C(X\Box Y,Z)\cong \ul\C(X,\Hom(Y,Z))$.
+\end{lemma}
+\begin{proof}
+  set-theoretic Yoneda \todo{complete this}
+\end{proof}
+
+\begin{lemma}
+  \label{claim7}
+  Given $A\in\V$, $X,Y\in\C$, then $A\odot(X\Box Y)\cong (A\odot X)\Box Y$.
+\end{lemma}
+\begin{proof}
+  We compute
+\[\ul\C(A\odot(X\Box Y), Z) \cong \ul\V(A,\ul\C(X\Box Y, Z))\cong\ul\V(A,\ul\C(X,\Hom(Y,Z)))\cong \ul\C(A\odot X, \Hom(Y,Z))\cong \ul\C((A\odot X)\Box Y, Z),\]
+so by Lemma \ref{claim3}, our result holds. 
+\end{proof}
+
+\begin{lemma}
+  \label{claim8}
+Similarly, $A\odot(X\Box Y)\cong A\odot(Y\Box X)$.
+\end{lemma}
+\begin{proof}
+  Analogous to the proof of to Lemma \ref{claim5}.
+\end{proof}
+
+\subsection{The Real Results}
+
+\begin{prop}
+  \label{lemma1}
+Given $A_i\in\V$, $X_i\in \C$, we have $(\otimes A_i)\odot (\Box X_i) \cong \Box(A_i\odot X_i)$.
+\end{prop}
+\begin{proof}
+  For $I = \set{1,2}$, we compute:
+  \begin{align*}
+    (A_1\otimes A_2)\odot(X_1\Box X_2) &\overset{\scriptsize{Lemma \ref{claim7}}}{\cong} ((A_1\otimes A_2)\odot X_1)\Box X_2 
+    \overset{\scriptsize{Lemma \ref{claim5}}}{\cong}((A_2\otimes A_1)\odot X_1)\Box X_2\\
+    &\overset{\scriptsize{Lemma \ref{claim4}}}{\cong}(A_2\odot (A_1\odot X_1))\Box X_2 
+    \overset{\scriptsize{Lemma \ref{claim7}}}{\cong}A_2\odot((A_1\odot X_1)\Box X_2)\\
+    &\overset{\scriptsize{Lemma \ref{claim8}}}{\cong}A_2\odot(X_2\Box (A_1\odot X_1))
+    \overset{\scriptsize{Lemma \ref{claim7}}}{\cong}(A_2\odot X_2)\Box (A_1\odot X_1)\\
+    &\cong (A_1\odot X_1)\Box (A_2\odot X_2).
+  \end{align*}
+Larger $I$ follows by induction.
+\end{proof}
+
+Given $C\in\C$, define the symmetric sequence $End(C)\in [\Sigma,\V]$ to be given by $End(C)(n) = \ul\C(C^{\Box n},C)$.
+
+\begin{prop}
+  \label{lemma2}
+  The hom-object multiplication map followed by enriched composition
+\[\ul\C(C^{\Box n},C)\otimes\ul\C(C^{\Box m_1},C)\otimes\ldots\otimes \ul\C(C^{\Box m_n},C) \to \ul\C(C^{\Box n},C)\otimes \ul\C(C^{\Box m_1+\ldots+m_n},C)\to \ul\C(C^{\Box m_1+\ldots+m_n},C)\]
+defines a monoidal structure on $End(C)$ in $([\Sigma,\V],\circ)$. 
+\end{prop}
+\begin{proof}
+  This follows directly from the axioms of ``enriched monoidal category''
+\todo[inline]{make sure to talk about ``enriched monoidal categories'' before/at some point; we need them for caterads anyway}.
+\end{proof}
+
+\begin{theorem}
+  Given $\V$ closed symmetric monoidal, $\C$ enriched closed symmetric monoidal over $\V$ and tensored over $\V$, then for all $C\in\C$, $End(C)$ is an operad on $\V$. \qed
+\end{theorem}
+
+Thus, in this setting, given any operad $\O$ on $\V$, $C\in \C$, we say an {\em $\O$-algebra structure on $\C$} is a map of operads $\O\to End(C)$. 
+ 
+\begin{example}
+  With $\V = \Top$ (or $\Top^G$) and $\C$ a nice symmetric monoidal category of spectra (or $G$-spectra), this recovers the usual definition: if $\O$ is an operad in spaces, $E$ a spectrum, then an $\O$-algebra structure on $E$ is a map $\wedge_n(\O(n))_+\smash_{\Sigma_n}E^{\smash n}\to E$, which is equivalent to a map $\O \to End(E)$ of operads.
+\end{example}
+
+
+
+
+%new section
+\section{$G$-functors}
+Let $\C$ be any $G$-category.
+\begin{lemma}
+ If $X: \SetG\to \TopG$ is a $G$-functor, then $\TopG(A,X(\blank))$ is a $G$-functor.
+\end{lemma}
+\begin{proof}
+This is clearly a functor, so we just need to check that the map of hom-$G$-spaces is equivariant. The map $\Iso(B,C)\to \TopG(\TopG(A,X(B)),\TopG(A,X(C)))$ is given by $f\mapsto X(f)_*$, so $g.f\mapsto X(g.f)_* = (g.X(f))_* = g.(X(f)_*)$.
+\end{proof}
+
+\begin{lemma}
+  $X$ a $G$-functor, then $A\smash X(\blank)$ is a $G$-functor.
+\end{lemma}
+\begin{proof}
+  This time, the map of hom-$G$-spaces sends $f$ to the function $a\smash x\mapsto a\smash X(f)(x)$, and we see
+\begin{align*}
+  g.(a\smash x\mapsto a\smash X(f)(x)):a\smash x &\mapsto g^{-1}a\smash g^{-1}x \mapsto g^{-1}a\smash X(f)(g^{-1}x)\\&=g^{-1}a\smash g^{-1}(g.X(f))(x) = g^{-1}a\smash g^{-1}(X(g.f))(x)\mapsto a\smash X(g.f)(x),
+\end{align*}
+as desired.
+\end{proof}
+
+
+
+%new section
+\chapter{Barratt-Eccles Operad}
+\section{Definition}
+\newcommand{\OO}{\text{$\mathbb{O}$}}
+We define the {\em categorical Barratt-Eccles operad} $\OO$ by $\OO_n = i^*Set(G,\Sigma_n)$, where $i^*: Set\to Cat$ is the right adjoint to the ``objects'' forgetful functor; $i^*(X)$ is the ``chaotic category generated by $X$'', to use the language of Guillou-May \cite{may_permutative_2014}. 
+
+Given a sequence of families $F_n$ of subgroups of $G\times \Sigma_n$, define the sequence of categories $\OO^F_*$ by $\OO^F_n = i^*\sets{f\in Set(G,\Sigma_n)}{Stab(f)\in \F_n}$. 
+
+\begin{theorem}
+  $|\OO_n^F|$ is a universal space for the family $\F_n$. 
+\end{theorem}
+
+\begin{lemma}
+\label{BElemma1}
+  Let $f\in Set(G,\Pi)$ be such that $f(e) = e$. Then there exists unique maximal subgroup $H$ of $G$ such that $f$ is a map of $H$-sets, and hence $f|_H$ is a group homomorphism.
+\end{lemma}
+\begin{proof}
+  Let $P$ be the subposet of subgroups $H$ of $G$ such that $f$ is a map of $H$-sets. It is non-empty: we see trivially that $\set{e}\in P$: $f|_e: \set{e}\mapsto e\in\Pi$ is a group homomorphism, and $f(e.g) := f(e*g) = f(g) = e*f(g) = f(e)*f(g) =: e.f(g)$, where ``$*$'' denotes multiplication and ``$.$'' denotes $H$-action, hence $f$ is a map of $H$-sets.
+ 
+Choose a maximal $H$ in $P$ (since $P$ finite, can do this). I claim that $H$ is unique. Suppose $H_1$, $H_2$ in $G$ both maximal such that $f$ is a $H_i$-map for both $i$, and let $N = <H_1,H_2>$ be the subgroup generated by $H_1$ and $H_2$. Then, first, $f|_N$ is a group homomorphism (follows easily by induction on the fact that $f$ is both an $H_1$- and an $H_2$- map). Now, $f$ is a map of $N$-sets:
+\[f(hkg) = h.f(kg) = h.(k.f(g)) := f(h)(f(k)f(g)) = f(hk)f(g) = (hk).f(g),\]
+and extend by induction. Hence, maximality of the $H_i$ imply they are equal. 
+\end{proof}
+
+
+\begin{lemma}
+\label{BElemma2}
+  Let $f\in Set(G,\Pi)$ such that $f(e) = e$. Then $Stab(f) = \Gamma(f|_H)$, where $H$ is as in the previous lemma.
+\end{lemma}
+\begin{proof}
+  If $f$ is an $H$ map - and hence a group homomorphism on $H$, then 
+\[((h,f(h)).f)(g) = f(h).f(h^{-1}g) = f(h)(h^{-1}.f(g)) := f(h)(f(h^{-1})f(g)) = f(hh^{-1})f(g) = f(g),\]
+and thus $\Gamma(f|_H) \subseteq Stab(f)$. 
+
+Suppose $(g,\pi)\in Stab(f)$, so $f(x) = ((g,\pi).f)(x) = \pi f(g^{-1}x)$ for all $x\in G$. I claim that $K:= <H,g>$ is such that $f$ is a map of $K$-sets: letting $x = g$, we see $f(g) = \pi f(e) = \pi$, so $(g,\pi)\in \Gamma(f)$. Moreover, letting $x = gx$, we see $f(gx) = \pi f(x) = f(g)f(x)$, so by induction $f$ is a map of $<g>$-sets. Now $f$ is a both a map of $H$-sets and $<g>$-sets, so it is a map of $<H,g>$-sets. However, since $H$ is maximal, $g\in H$, so $(g,\pi) = (g,f(g))\in \Gamma(f|_H)$.
+\end{proof}
+
+\begin{lemma}
+\label{BElemma3}
+Suppose $H\leq G$, and suppose $\tilde f: H\to \Pi$ is a group homomorphism. Then there exists a set map $f: G\to \Pi$ extending $\tilde f$ such that $H_f$ (as in Lemma \ref{BElemma1}) equals the original $H$ - except if $(G,H) = (\Z/2, \set{e})$. 
+\end{lemma}
+\begin{proof}
+  For any choice of $f$, we will always have $H\subseteq H_f$. The cases where $\Pi$ is trivial, or where $|G/H| = 1$, are trivial.
+  \begin{description}
+  \item[Case I:] There exists $\pi_0\in \Pi$ such that $\pi_0^2\neq e$. 
+
+    Then let $f(g) = \tilde f(g)$ for $g\in H$, and $\pi_0$ for $g\not\in H$. Suppose $x\in H_f\setminus H$. Then
+\[e = \tilde f(e) = f(e) = f(xx^{-1}) = f(x)f(x^{-1}) = \pi_0^2,\]
+a contradiction.
+
+\item[Case II:] $|G/H|\neq 2$. 
+
+  Fix some non-unit $\pi_0\in \Pi$, and use the same $f$. Again suppose we have an $x\in H_f\setminus H$. Then, say, $x$ is in some coset $Ha^{-1}$, $a\notin H$, but not in the coset $H$ nor at least one other coset $Hb^{-1}$; thus $xb \notin H$, so $\pi_0 = f(xy) = x.f(y):= f(x)f(y) = \pi_0^2$, contradicting $\pi_0\neq e$.
+
+\item[Otherwise:] so $|G/H| = 2$, and for all $\pi\in\Pi$, $\pi^2=e$. Thus $H$ is a maximal proper subgroup, so $H_f\neq H$ implies $H_f = G$ (so $f$ is a group homomorphism on all of $G$). 
+
+  Assuming this, let use define $f$ as in Case II, and again suppose $H_f\neq H$; fix some $x\in H_f\setminus H$. Since $x\notin H$, $x\in Hg^{-1}$ for some $g$, so $xg\in H$ for some $g\notin H$ with $g\in H_f$. Then:
+  \begin{align*}
+    \tilde f(xg) &= f(xg) = f(x)f(g) = \pi_0^2 = e;\\
+    \tilde f(xgh) = f(xgh) = f(x)f(gh) = \pi_0^2 = e
+  \end{align*}
+for all $h\in H$; but $\tilde f$ is a group homomorphism on $H$, implying $e = \tilde f(xgh) = \tilde f(xg) \tilde f(h) = \tilde f(h)$ for all $h\in H$.
+
+Now, suppose $(G,H)\neq (\Z/2, \set{e})$, so $|G\setminus H|>1$. Fix two distinct $x,x_0\in G\setminus H$, and define $\phi: G\to \Pi$ by $f(g) = e$ if $g\in H\cup\set{x_0}$ (which is not all of $G$), and $\phi(g) = \pi_0\neq e$ otherwise. Note that this is in fact an extension of $f$. Again, our assumptions imply that either $H_\phi = H$ or $H_\phi = G$; assuming the former, both $x$ and $x_0$ are in $H_\phi\setminus H$. Since $|G/H|=2$, $x\in Hx_0^{-1}$, so $xx_0\in H$, so 
+\[e = \tilde f(xx_0) = \phi(xx_0) = \phi(x)\phi(x_0) = \phi(x) = \pi_0,\]
+contradicting $\pi_0\neq e$.
+  \end{description}
+\end{proof}
+
+
+
+
+\begin{proof}[Proof of Main Theorem:]
+
+Since $|\blank |$ and $i^*$ commute with fixed points, we have $|\OO^F_n|^\Lambda \cong |i^*Set(G,\Sigma_n)^\Lambda|$ for all $\Lambda\leq G\times \Sigma_n$, and since $i^*X$ is a connected groupoid for all $X$, $|i^*X|$ is either empty of contractible; thus it suffices to show $(\OO_n^F)^\Lambda \neq \varnothing$ {\sc iff} $\Lambda\in F_n$. 
+
+``$\Rightarrow$'' Suppose $f\in (\OO_n^F)^\Lambda$. Then $\Lambda\leq Stab(f)\in F_n$, and since $F_n$ is closed under subgroup, $\Lambda\in F_n$.
+
+``$\Leftarrow$'' Suppose $\Lambda\in F_n$, and since $\Lambda\cap \Sigma_n = \set{e}$, we have that there exists a map $\tilde f: H\to \Sigma_n$ for some $H\leq G$ such that $\Lambda = \Gamma(\tilde f)$. By \ref{BElemma3}, unless $\Lambda = \set{(e,e)}\leq \Z/2\time \Sigma_2$, there exists a set map $f: G\to \Sigma_n$ extending $\tilde f$ such that $H_f = H$. Thus
+\[Stab(f) = \Gamma(f|_{H_f}) = \Gamma(f|_H) = \Gamma(\tilde f) = \Lambda\in F_n,\]
+so $f\in (\OO_n^F)^\Lambda$; thus it is non-empty, as desired.
+
+If $\Lambda = \set{(e,e)}$, then $(\OO^F_n)^\Lambda = \OO^F_n$, and the constant homomorphism $\Z/2\to \Sigma_2$ has stabilizer $\set{(e,e),(\tau,e)}$, which is in $F_n$ for all of our families.   
+\end{proof}
+
+
+\begin{remark}
+  Lemma \ref{BElemma3} fails for $(G,H) = (\Z/2,\set{e})$. Indeed, since $\pi^2 = e$ for all $\pi\in \Pi$, $(xy)(xy) = e$, so $xy = yx$, so $\Pi$ must be finite abelian with global order 2, so $\Pi\cong\bigoplus_N\Z/2$ for some $N\in\N$. We'd then be looking for a map $\Z/2\to \bigoplus_N\Z/2$ sending $e$ to $e$ which was {\em not} a group homomorphism; but this is implisslbe: in each coordinate, either choice yields a group homomorphism.
+\end{remark}
+$ $\\
+
+$ $\\
+
+\begin{lemma}
+ If $f\in Set(G,\Pi)$, then $Stab(f)$ SOMEHOW DEAL WITH DEFINITION 5.9 WHERE WE HAVEN'T RESTRICTED TO f's WHICH HAVE f(e)=e. 
+\end{lemma}
+
+
+
+\end{appendices}
+
+%\nocite{*}
+
+
+
+
+\bibliographystyle{alpha}%alpha
+\bibliography{biblio}
+
+
+\end{document}
